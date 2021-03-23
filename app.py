@@ -1,4 +1,7 @@
 from tkinter import *
+import cv2
+from experimentation import Experimentation
+from gaze_tracking import GazeTracking
 
 # creation fenêtre
 
@@ -59,8 +62,8 @@ class Application :
 		button_synthesis.pack()
 		button_synthesis.place(x=300, y=500)
 
-		button_start = Button(self.window, text="Start experimation")
-		button_start.pack(side=BOTTOM)
+		button_start = Button(self.window, text="Start experimation",command=start_experimentation)
+		button_start.pack(pady = 30 ,side=BOTTOM)
 
 
 	def create_labels(self):
@@ -116,14 +119,47 @@ class Application :
 
 
 
+def start_experimentation():
+	expe = Experimentation()
+	while True:
+
+		# We get a new frame from the webcam
+		_, frame = webcam.read()
+		# We send this frame to GazeTracking to analyze it
+		gaze.refresh(frame)
+		frame = gaze.annotated_frame()
+		left_pupil = gaze.pupil_left_coords()
+		right_pupil = gaze.pupil_right_coords()
+		ratioX = gaze.horizontal_ratio()
+		ratioY = gaze.vertical_ratio()
+		print('RATION X' + str(ratioX) + ' RATIO Y :' + str(ratioY))
+		print('EYE  X' + str(left_pupil) + ' EYE Y :' + str(right_pupil))
+
+		if(ratioX != None and ratioY != None):
+			expe.paint_eye_point(ratioX,ratioY)
+		expe.window.update_idletasks()
+		expe.window.update()
 
 
 
 def upload():
 	print("TODO ")
 
+
+
+
+
 ##### MAIN ########
 
 # afficher la fenêtre
 app = Application()
-app.window.mainloop()
+
+gaze = GazeTracking()
+webcam = cv2.VideoCapture(0)
+
+
+
+
+while True:
+	app.window.update_idletasks()
+	app.window.update()
