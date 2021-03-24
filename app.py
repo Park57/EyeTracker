@@ -20,9 +20,9 @@ class Application :
 		self.window.geometry(str(self.x)+"x"+str(self.y))
 		self.window.minsize(480, 360)
 		#self.window.iconbitmap("data/logo.ico")
-
 		self.window.config(background='#4C4B4B')
 		self.create_widgets()
+		self.label_title = Label(self.window, text="Experimentation parameters",font=("Arial", 40), bg='#4C4B4B', fg='white')
 
 	def create_widgets(self):
 
@@ -36,10 +36,10 @@ class Application :
 	def create_title(self):
 
 		# ajout du titre
-		label_title = Label(self.window, text="Experimentation parameters",
+		self.label_title = Label(self.window, text="Experimentation parameters",
 							font=("Arial", 40), bg='#4C4B4B', fg='white')
-		label_title.pack()
-		label_title.place(height=self.y /4, width=self.x )
+		self.label_title.pack()
+		self.label_title.place(height=self.y /4, width=self.x )
 
 	def create_buttons(self):
 
@@ -141,11 +141,19 @@ def start_experimentation():
 
 
 
+
 def upload():
 	print("TODO ")
 
 
 
+def update(app):
+	app.x = app.window.winfo_width()
+	app.y = app.window.winfo_height()
+	app.label_title.pack()
+	app.label_title.place(height=app.y /4, width=app.x )
+	#app.input_name.place(x= self.x / 5, y =  self.y / 4)
+	return app
 
 
 ##### MAIN ########
@@ -162,3 +170,4 @@ webcam = cv2.VideoCapture(0)
 while True:
 	app.window.update_idletasks()
 	app.window.update()
+	#app = update(app)
