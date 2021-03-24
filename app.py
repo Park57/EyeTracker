@@ -130,13 +130,13 @@ def start_experimentation():
 		frame = gaze.annotated_frame()
 		left_pupil = gaze.pupil_left_coords()
 		right_pupil = gaze.pupil_right_coords()
-		ratioX = gaze.horizontal_ratio()
+		ratioX =  gaze.horizontal_ratio()
 		ratioY = gaze.vertical_ratio()
 		print('RATION X' + str(ratioX) + ' RATIO Y :' + str(ratioY))
 		print('EYE  X' + str(left_pupil) + ' EYE Y :' + str(right_pupil))
 
 		if(ratioX != None and ratioY != None):
-			expe.paint_eye_point(ratioX,ratioY)
+			expe.paint_eye_point(1.0 - ratioX,ratioY)
 		expe.window.update_idletasks()
 		expe.window.update()
 
