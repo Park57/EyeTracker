@@ -12,13 +12,12 @@ class Application :
 
 		self.window = Tk()
 
-		x = self.window.winfo_screenwidth()
-		y = self.window.winfo_screenheight()
-
+		self.x = self.window.winfo_screenwidth()
+		self.y = self.window.winfo_screenheight()
 		# personnalisation de la fenêtre
 
 		self.window.title("My application")
-		self.window.geometry(str(x)+"x"+str(y))
+		self.window.geometry(str(self.x)+"x"+str(self.y))
 		self.window.minsize(480, 360)
 		#self.window.iconbitmap("data/logo.ico")
 
@@ -40,27 +39,27 @@ class Application :
 		label_title = Label(self.window, text="Experimentation parameters",
 							font=("Arial", 40), bg='#4C4B4B', fg='white')
 		label_title.pack()
-		label_title.place(height=100, width=2000)
+		label_title.place(height=self.y /4, width=self.x )
 
 	def create_buttons(self):
 
 		# ajout champ de saisie
 		input_name = Entry(self.window)
 		input_name.insert(0, "Name")
-		input_name.pack(side=LEFT)
-		input_name.place(x=50, y=250)
+		#input_name.pack(side=LEFT)
+		input_name.place(x= self.x / 5, y =  self.y / 4)
 		input_surname = Entry(self.window)
 		input_surname.insert(0, "Surname")
 		input_surname.pack()
-		input_surname.place(x=300, y=250)
+		input_surname.place(x=self.x *3/5, y= self.y /4)
 
 		button_upload = Button(self.window, text="Upload new image",command=upload)
 		button_upload.pack()
-		button_upload.place(x=50, y=500)
+		button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
 		button_synthesis = Button(self.window, text="Speech Synthesis question")
 		button_synthesis.pack()
-		button_synthesis.place(x=300, y=500)
+		button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 
 		button_start = Button(self.window, text="Start experimation",command=start_experimentation)
 		button_start.pack(pady = 30 ,side=BOTTOM)
@@ -71,24 +70,24 @@ class Application :
 		# ajout checkbox
 		label_data = Label(self.window, text="Save data", font=(
 			"Arial", 12), bg='#4C4B4B', fg='white')
-		label_data.place(x=80, y=300)
+		label_data.place(x=self.x/5 +35, y=self.y*2/6 )
 
 
 
 		label_data = Label(self.window, text="Save graph image",
 						   font=("Arial", 12), bg='#4C4B4B', fg='white')
-		label_data.place(x=80, y=350)
+		label_data.place(x=self.x/5 +35, y=self.y*3/7)
 
 
 		label_data = Label(self.window, text="Data per second",
 				   font=("Arial", 12), bg='#4C4B4B', fg='white')
 		label_data.pack()
-		label_data.place(x=50, y=400)
+		label_data.place(x=self.x/5, y=self.y*4/8)
 
 		label_speech = Label(self.window, text="Volume speech synthesis",
 					 font=("Arial", 12), bg='#4C4B4B', fg='white')
 		label_speech.pack()
-		label_speech.place(x=300, y=400)
+		label_speech.place(x=self.x* 3/5, y=self.y*4/8)
 
 
 
@@ -98,24 +97,24 @@ class Application :
 		data_check = Checkbutton(self.window, text="", bg='#4C4B4B')
 		data_check.select()
 		data_check.pack()
-		data_check.place(x=50, y=300)
+		data_check.place(x=self.x/5, y=self.y*2/6)
 
 		graph_check = Checkbutton(self.window, text="", bg='#4C4B4B')
 		graph_check.select()
 		graph_check.pack()
-		graph_check.place(x=50, y=350)
+		graph_check.place(x=self.x/5, y=self.y*3/7)
 
 
 	def create_scales(self):
 
 		scale_data = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=30, to=60, resolution=30)
 		scale_data.pack()
-		scale_data.place(x=55, y=425)
+		scale_data.place(x=self.x/5, y=self.y*4/8 +25)
 
 
 		scale_volume = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=0, to=100, resolution=1)
 		scale_volume.pack()
-		scale_volume.place(x=325, y=425)
+		scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
 
 
 
