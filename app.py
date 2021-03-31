@@ -11,18 +11,36 @@ class Application :
 	def __init__(self):
 
 		self.window = Tk()
-
 		self.x = self.window.winfo_screenwidth()
 		self.y = self.window.winfo_screenheight()
 		# personnalisation de la fenêtre
 
 		self.window.title("My application")
 		self.window.geometry(str(self.x)+"x"+str(self.y))
-		self.window.minsize(480, 360)
+		self.window.minsize(600, 400)
 		#self.window.iconbitmap("data/logo.ico")
 		self.window.config(background='#4C4B4B')
+
+		self.label_title = Label()
+		self.input_name = Entry()
+		self.input_surname = Entry()
+
+		self.button_upload = Button()
+		self.button_synthesis = Button()
+		self.button_start = Button()
+
+		self.label_data = Label()
+		self.label_image = Label()
+		self.label_sec = Label()
+		self.label_speech = Label()
+
+		self.data_check = Checkbutton()
+		self.graph_check = Checkbutton()
+
+		self.scale_data = Scale()
+		self.scale_volume = Scale()
+
 		self.create_widgets()
-		self.label_title = Label(self.window, text="Experimentation parameters",font=("Arial", 40), bg='#4C4B4B', fg='white')
 
 	def create_widgets(self):
 
@@ -31,6 +49,7 @@ class Application :
 		self.create_labels()
 		self.create_checkboxs()
 		self.create_scales()
+		self.updatePos()
 
 
 	def create_title(self):
@@ -44,79 +63,104 @@ class Application :
 	def create_buttons(self):
 
 		# ajout champ de saisie
-		input_name = Entry(self.window)
-		input_name.insert(0, "Name")
-		#input_name.pack(side=LEFT)
-		input_name.place(x= self.x / 5, y =  self.y / 4)
-		input_surname = Entry(self.window)
-		input_surname.insert(0, "Surname")
-		input_surname.pack()
-		input_surname.place(x=self.x *3/5, y= self.y /4)
+		self.input_name = Entry(self.window)
+		self.input_name.insert(0, "Name")
+		#self.input_name.place(x= self.x / 5, y =  self.y / 4)
 
-		button_upload = Button(self.window, text="Upload new image",command=upload)
-		button_upload.pack()
-		button_upload.place(x= self.x/5	,  y= self.y * 4/6)
+		self.input_surname = Entry(self.window)
+		self.input_surname.insert(0, "Surname")
+		self.input_surname.pack()
+		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		button_synthesis = Button(self.window, text="Speech Synthesis question")
-		button_synthesis.pack()
-		button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+		self.button_upload = Button(self.window, text="Upload new image",command=upload)
+		self.button_upload.pack()
+		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
-		button_start = Button(self.window, text="Start experimation",command=start_experimentation)
-		button_start.pack(pady = 30 ,side=BOTTOM)
+		self.button_synthesis = Button(self.window, text="Speech Synthesis question")
+		self.button_synthesis.pack()
+		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+
+		self.button_start = Button(self.window, text="Start experimation",command=start_experimentation)
+		#self.button_start.pack(pady = 30 ,side=BOTTOM)
 
 
 	def create_labels(self):
 
 		# ajout checkbox
-		label_data = Label(self.window, text="Save data", font=(
+		self.label_data = Label(self.window, text="Save data", font=(
 			"Arial", 12), bg='#4C4B4B', fg='white')
-		label_data.place(x=self.x/5 +35, y=self.y*2/6 )
+		#self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
 
 
 
-		label_data = Label(self.window, text="Save graph image",
+		self.label_image = Label(self.window, text="Save graph image",
 						   font=("Arial", 12), bg='#4C4B4B', fg='white')
-		label_data.place(x=self.x/5 +35, y=self.y*3/7)
+		#self.label_image.place(x=self.x/5 +35, y=self.y*3/7)
 
 
-		label_data = Label(self.window, text="Data per second",
+		self.label_sec = Label(self.window, text="Data per second",
 				   font=("Arial", 12), bg='#4C4B4B', fg='white')
-		label_data.pack()
-		label_data.place(x=self.x/5, y=self.y*4/8)
+		self.label_sec.pack()
+		#self.label_sec.place(x=self.x/5, y=self.y*4/8)
 
-		label_speech = Label(self.window, text="Volume speech synthesis",
+		self.label_speech = Label(self.window, text="Volume speech synthesis",
 					 font=("Arial", 12), bg='#4C4B4B', fg='white')
-		label_speech.pack()
-		label_speech.place(x=self.x* 3/5, y=self.y*4/8)
+		self.label_speech.pack()
+		#self.label_speech.place(x=self.x* 3/5, y=self.y*4/8)
 
 
 
 
 	def create_checkboxs(self):
 
-		data_check = Checkbutton(self.window, text="", bg='#4C4B4B')
-		data_check.select()
-		data_check.pack()
-		data_check.place(x=self.x/5, y=self.y*2/6)
+		self.data_check = Checkbutton(self.window, text="", bg='#4C4B4B')
+		self.data_check.select()
+		self.data_check.pack()
+		#self.data_check.place(x=self.x/5, y=self.y*2/6)
 
-		graph_check = Checkbutton(self.window, text="", bg='#4C4B4B')
-		graph_check.select()
-		graph_check.pack()
-		graph_check.place(x=self.x/5, y=self.y*3/7)
+		self.graph_check = Checkbutton(self.window, text="", bg='#4C4B4B')
+		self.graph_check.select()
+		self.graph_check.pack()
+		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
 
 
 	def create_scales(self):
 
-		scale_data = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=30, to=60, resolution=30)
-		scale_data.pack()
-		scale_data.place(x=self.x/5, y=self.y*4/8 +25)
+		self.scale_data = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=30, to=60, resolution=30)
+		self.scale_data.pack()
+		#self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
 
 
-		scale_volume = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=0, to=100, resolution=1)
-		scale_volume.pack()
-		scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
+		self.scale_volume = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=0, to=100, resolution=1)
+		self.scale_volume.pack()
+		#self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
 
+	def updatePos(self):
+		if self.x != self.window.winfo_width() or self.y != self.window.winfo_height() :
+			self.x = self.window.winfo_width()
+			self.y = self.window.winfo_height()
 
+			self.label_title.place(height=self.y /4, width=self.x )
+
+			self.input_name.place(x= self.x / 5, y =  self.y / 4)
+			self.input_surname.place(x=self.x *3/5, y= self.y /4)
+
+			self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
+			self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+			self.button_start.pack(pady = 30 ,side=BOTTOM)
+
+			self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
+			self.label_image.place(x=self.x/5 +35, y=self.y*3/7)
+			self.label_sec.place(x=self.x/5, y=self.y*4/8)
+			self.label_speech.place(x=self.x* 3/5, y=self.y*4/8)
+
+			self.data_check.place(x=self.x/5, y=self.y*2/6)
+			self.graph_check.place(x=self.x/5, y=self.y*3/7)
+
+			self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
+			self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
+
+			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
 
 def start_experimentation():
 	expe = Experimentation()
@@ -147,13 +191,7 @@ def upload():
 
 
 
-def update(app):
-	app.x = app.window.winfo_width()
-	app.y = app.window.winfo_height()
-	app.label_title.pack()
-	app.label_title.place(height=app.y /4, width=app.x )
-	#app.input_name.place(x= self.x / 5, y =  self.y / 4)
-	return app
+
 
 
 ##### MAIN ########
@@ -170,4 +208,4 @@ webcam = cv2.VideoCapture(0)
 while True:
 	app.window.update_idletasks()
 	app.window.update()
-	#app = update(app)
+	app.updatePos()
