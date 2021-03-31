@@ -2,6 +2,16 @@ from tkinter import *
 import cv2
 from experimentation import Experimentation
 from gaze_tracking import GazeTracking
+from tkinter import filedialog
+from tkinter import PhotoImage
+
+#sudo apt-get install python3-pil python3-pil.imagetk
+import os
+import PIL
+from PIL import ImageTk
+from PIL import Image
+
+# pip install pillow
 
 # creation fenêtre
 
@@ -9,8 +19,14 @@ from gaze_tracking import GazeTracking
 class Application :
 
 	def __init__(self):
-
+		self.rep=os.getcwd()
+		self.fic = ""
+		self.repfic = ""
+		#im = self.repertoiredetravail()
+		print(self.repfic)
 		self.window = Tk()
+		self.im = Tk()
+
 		self.x = self.window.winfo_screenwidth()
 		self.y = self.window.winfo_screenheight()
 		# personnalisation de la fenêtre
@@ -18,7 +34,12 @@ class Application :
 		self.window.title("My application")
 		self.window.geometry(str(self.x)+"x"+str(self.y))
 		self.window.minsize(600, 400)
-		#self.window.iconbitmap("data/logo.ico")
+
+		#self.window.call('wm', 'iconphoto',self.window._w,PhotoImage(file=self.repfic))
+		#self.window.iconbitmap(self.repfic)
+		#root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='/path/to/ico/icon.png')
+		#self.window.iconphoto(False, PhotoImage(file=self.repfic))
+
 		self.window.config(background='#4C4B4B')
 
 		self.label_title = Label()
@@ -72,7 +93,7 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image",command=upload)
+		self.button_upload = Button(self.window, text="Upload new image",command=self.upload)
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
@@ -162,6 +183,33 @@ class Application :
 
 			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
 
+	def repertoiredetravail(self):
+		self.repfic = filedialog.askopenfilename(title="Ouvrir le fichier:", initialdir=self.rep,
+						initialfile=self.fic, filetypes = [("All", "*"),("Fichiers Python","*.py;*.pyw")])
+		if len(self.repfic) > 0:
+			self.rep=os.path.dirname(self.repfic)
+			self.fic=os.path.basename(self.repfic)
+
+	def upload(self):
+		self.repertoiredetravail()
+
+		self.im.title("upload")
+		self.im.geometry(str(self.x)+"x"+str(self.y))
+		self.im.minsize(600, 400)
+		self.im.config(background='#4C4B4B')
+		self.im.update_idletasks()
+		self.im.update()
+		load = Image.open(self.repfic)
+		render = ImageTk.PhotoImage(load)
+		#img = Label(self.im, image=render)
+		#ça marche pas et je sais pas pk
+		img = Label(self.window, image=render)
+
+		img.image = render
+		img.place(x=0, y=0)
+
+
+
 def start_experimentation():
 	expe = Experimentation()
 	while True:
@@ -186,8 +234,6 @@ def start_experimentation():
 
 
 
-def upload():
-	print("TODO ")
 
 
 
@@ -209,3 +255,4 @@ while True:
 	app.window.update_idletasks()
 	app.window.update()
 	app.updatePos()
+
