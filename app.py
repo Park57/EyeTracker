@@ -1,6 +1,7 @@
 from tkinter import *
 import cv2
 from experimentation import Experimentation
+from protocole import Protocole
 from gaze_tracking import GazeTracking
 from tkinter import filedialog
 from tkinter import PhotoImage
@@ -93,7 +94,7 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image",command=self.upload)
+		self.button_upload = Button(self.window, text="Upload new image/ ?cree une nouvelle experimentation ?",command=self.upload)
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
@@ -194,11 +195,11 @@ class Application :
 		self.repertoiredetravail()
 
 		self.im.title("upload")
-		self.im.geometry(str(self.x)+"x"+str(self.y))
+		self.im.geometry(str(444)+"x"+str(444))
 		self.im.minsize(600, 400)
 		self.im.config(background='#4C4B4B')
-		self.im.update_idletasks()
-		self.im.update()
+		#self.im.update_idletasks()
+		#self.im.update()
 		load = Image.open(self.repfic)
 		render = ImageTk.PhotoImage(load)
 		#img = Label(self.im, image=render)
@@ -249,7 +250,7 @@ gaze = GazeTracking()
 webcam = cv2.VideoCapture(0)
 
 
-
+pro = Protocole("test")
 
 while True:
 	app.window.update_idletasks()
