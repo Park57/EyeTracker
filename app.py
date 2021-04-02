@@ -26,7 +26,7 @@ class Application :
 		#im = self.repertoiredetravail()
 		print(self.repfic)
 		self.window = Tk()
-		self.im = Tk()
+		#self.im = Tk()
 
 		self.x = self.window.winfo_screenwidth()
 		self.y = self.window.winfo_screenheight()
@@ -62,6 +62,9 @@ class Application :
 		self.scale_data = Scale()
 		self.scale_volume = Scale()
 
+		self.list = Listbox()
+
+		#variable = StringVar(self.window)
 		self.create_widgets()
 
 	def create_widgets(self):
@@ -71,8 +74,9 @@ class Application :
 		self.create_labels()
 		self.create_checkboxs()
 		self.create_scales()
-		self.updatePos()
+		self.create_multiple()
 
+		self.updatePos()
 
 	def create_title(self):
 
@@ -144,7 +148,15 @@ class Application :
 		self.graph_check.select()
 		self.graph_check.pack()
 		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
+	def create_multiple(self):
 
+		x = ["Eperiance Photo", "Video Homme", "Video Femme", "Photo Visage", "Photo objet"]
+		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=len(x) )
+		self.list.pack()
+
+		for each_item in range(len(x)):
+			self.list.insert(END, x[each_item])
+			self.list.activate(each_item)
 
 	def create_scales(self):
 
@@ -182,6 +194,7 @@ class Application :
 			self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
 			self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
 
+			self.list.place (x=self.x* 2/5, y=self.y*2/8 +25)
 			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
 
 	def repertoiredetravail(self):
@@ -192,14 +205,10 @@ class Application :
 			self.fic=os.path.basename(self.repfic)
 
 	def upload(self):
+		y = self.list.curselection()
+		print(y)
 		self.repertoiredetravail()
 
-		self.im.title("upload")
-		self.im.geometry(str(444)+"x"+str(444))
-		self.im.minsize(600, 400)
-		self.im.config(background='#4C4B4B')
-		#self.im.update_idletasks()
-		#self.im.update()
 		load = Image.open(self.repfic)
 		render = ImageTk.PhotoImage(load)
 		#img = Label(self.im, image=render)
@@ -213,6 +222,7 @@ class Application :
 
 def start_experimentation():
 	expe = Experimentation()
+	nbNoneConcecutif = 0
 	while True:
 
 		# We get a new frame from the webcam
@@ -229,6 +239,13 @@ def start_experimentation():
 
 		if(ratioX != None and ratioY != None):
 			expe.paint_eye_point(1.0 - ratioX,ratioY)
+			nbNoneConcecutif = 0
+		else :
+			if  nbNoneConcecutif >30000:
+				nbNoneConcecutif = 0
+				expe = Experimentation()
+			nbNoneConcecutif += 1
+
 		expe.window.update_idletasks()
 		expe.window.update()
 
@@ -236,7 +253,9 @@ def start_experimentation():
 
 
 
-
+def callback(*args):
+	#print(app.variable)
+	app.button_start.configure(text="The selected item is {}".format(app.variable.get()))
 
 
 
