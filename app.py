@@ -1,8 +1,6 @@
 from tkinter import *
-import cv2
 from experimentation import Experimentation
 from protocole import Protocole
-from gaze_tracking import GazeTracking
 from tkinter import filedialog
 from tkinter import PhotoImage
 
@@ -19,7 +17,10 @@ from PIL import Image
 
 class Application :
 
-	def __init__(self):
+	def __init__(self,expe):
+
+		self.experimentation = expe
+
 		self.rep=os.getcwd()
 		self.fic = ""
 		self.repfic = ""
@@ -106,7 +107,7 @@ class Application :
 		self.button_synthesis.pack()
 		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 
-		self.button_start = Button(self.window, text="Start experimation",command=start_experimentation)
+		self.button_start = Button(self.window, text="Start experimation",command=self.launch_an_experimentation)
 		#self.button_start.pack(pady = 30 ,side=BOTTOM)
 
 
@@ -150,7 +151,7 @@ class Application :
 		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
 	def create_multiple(self):
 
-		x = ["Eperiance Photo", "Video Homme", "Video Femme", "Photo Visage", "Photo objet"]
+		x = ["Experience Photo", "Video Homme", "Video Femme", "Photo Visage", "Photo objet"]
 		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=len(x) )
 		self.list.pack()
 
@@ -204,6 +205,8 @@ class Application :
 			self.rep=os.path.dirname(self.repfic)
 			self.fic=os.path.basename(self.repfic)
 
+
+
 	def upload(self):
 		y = self.list.curselection()
 		print(y)
@@ -218,44 +221,15 @@ class Application :
 		img.image = render
 		img.place(x=0, y=0)
 
-
-
-def start_experimentation():
-	expe = Experimentation()
-	nbNoneConcecutif = 0
-	while True:
-
-		# We get a new frame from the webcam
-		_, frame = webcam.read()
-		# We send this frame to GazeTracking to analyze it
-		gaze.refresh(frame)
-		frame = gaze.annotated_frame()
-		left_pupil = gaze.pupil_left_coords()
-		right_pupil = gaze.pupil_right_coords()
-		ratioX =  gaze.horizontal_ratio()
-		ratioY = gaze.vertical_ratio()
-		print('RATION X' + str(ratioX) + ' RATIO Y :' + str(ratioY))
-		print('EYE  X' + str(left_pupil) + ' EYE Y :' + str(right_pupil))
-
-		if(ratioX != None and ratioY != None):
-			expe.paint_eye_point(1.0 - ratioX,ratioY)
-			nbNoneConcecutif = 0
-		else :
-			if  nbNoneConcecutif >30000:
-				nbNoneConcecutif = 0
-				expe = Experimentation()
-			nbNoneConcecutif += 1
-
-		expe.window.update_idletasks()
-		expe.window.update()
-
+	def launch_an_experimentation(self):
+		self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 
 
 
 def callback(*args):
 	#print(app.variable)
-	app.button_start.configure(text="The selected item is {}".format(app.variable.get()))
+	application.button_start.configure(text="The selected item is {}".format(application.variable.get()))
 
 
 
@@ -263,16 +237,19 @@ def callback(*args):
 ##### MAIN ########
 
 # afficher la fenêtre
-app = Application()
 
-gaze = GazeTracking()
-webcam = cv2.VideoCapture(0)
+
+
+expe = Experimentation()
+application = Application(expe)
+
+
 
 
 pro = Protocole("test")
 
 while True:
-	app.window.update_idletasks()
-	app.window.update()
-	app.updatePos()
+	application.window.update_idletasks()
+	application.window.update()
+	application.updatePos()
 
