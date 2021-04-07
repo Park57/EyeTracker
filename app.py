@@ -10,7 +10,7 @@ import os
 import PIL
 from PIL import ImageTk
 from PIL import Image
-
+from nouveauProtocole import *
 # pip install pillow
 
 # creation fenêtre
@@ -104,7 +104,7 @@ class Application :
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
-		self.button_synthesis = Button(self.window, text="Speech Synthesis question")
+		self.button_synthesis = Button(self.window, text="Speech Synthesis question",command=nouveauProtocole)
 		self.button_synthesis.pack()
 		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 
