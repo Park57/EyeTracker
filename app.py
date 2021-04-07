@@ -3,6 +3,7 @@ from experimentation import Experimentation
 from protocole import Protocole
 from tkinter import filedialog
 from tkinter import PhotoImage
+from speech import Speech
 
 #sudo apt-get install python3-pil python3-pil.imagetk
 import os
@@ -242,7 +243,9 @@ def callback(*args):
 
 expe = Experimentation()
 application = Application(expe)
+speech = Speech()
 
+speech.speakSentence('Hello World !', 'bonjour')
 
 
 
