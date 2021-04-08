@@ -52,6 +52,7 @@ class Application :
 		self.button_upload = Button()
 		self.button_synthesis = Button()
 		self.button_start = Button()
+		self.button_add = Button()
 
 		self.label_data = Label()
 		self.label_image = Label()
@@ -100,13 +101,16 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image/ ?cree une nouvelle experimentation ?",command=self.upload)
+		self.button_upload = Button(self.window, text="Upload new image ?",command=self.upload)
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
-		self.button_synthesis = Button(self.window, text="Speech Synthesis question",command=nouveauProtocole)
+		self.button_synthesis = Button(self.window, text="Speech Synthesis question")
 		self.button_synthesis.pack()
 		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+
+		self.button_add = Button(self.window, text="add protocole",command=nouveauProtocole)
+		self.button_add.pack()
 
 		self.button_start = Button(self.window, text="Start experimation",command=self.launch_an_experimentation)
 		#self.button_start.pack(pady = 30 ,side=BOTTOM)
@@ -183,6 +187,7 @@ class Application :
 
 			self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 			self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+			self.button_add.place(x=self.x * 2/5, y=self.y * 4/6)
 			self.button_start.pack(pady = 30 ,side=BOTTOM)
 
 			self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
