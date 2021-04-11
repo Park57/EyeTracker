@@ -21,10 +21,16 @@ def nouveauProtocole():
 	button_annule = Button(window, text="annulé",command= lambda: annule(window))
 	button_annule.pack(pady = 30 ,side=BOTTOM)
 
-	button_valider = Button(window, text="valider",command= lambda: valider())
+	button_valider = Button(window, text="valider",command= lambda: (valider(input_name.get()),annule(window)))
 	button_valider.pack(pady = 30 ,side=BOTTOM)
 	label_title.pack()
 
+	#vcmd = (master1.register(self.validate),'%d',)
+    #dlabel_temps = tk.Entry(self.panel2, validate = 'key', validatecommand = vcmd)
+	input_name = Entry(window)
+	input_name.insert(0, "Name")
+	input_name.pack()
+	input_name.place(x=width_window /2,y=height_window*2/4 )
 	window.mainloop()
 	print('yo')
 	#canvas = Canvas(window,width = width_window,height=height_window)
@@ -35,7 +41,8 @@ def aa(b):
 
 def annule(window):
 	window.destroy()
-def valider():
+def valider(name):
 	global a
-	sauvegarderInfo(["test",a[0], "bonjour"])
+	sauvegarderInfo(["testDeux",a[0], name,a[2]])
+
 

@@ -21,8 +21,15 @@ def repucData(list):
 		fichier.close()
 
 def sauvegarderInfo(info):
-	fichier = open('data/sauvegarde/'+test, 'w')
-	shutil.move(info[1],'data/sauvegarde/'+info[0]) #deplace des fichier
+	#info : nom,
+	dossier = 'data/protocole/'+info[2]+'/'
+	try:
+		os.mkdir(dossier)
+	except:
+		print('dossier deja existant')
+
+	fichier = open(dossier+"info", 'w')
+	shutil.copy(info[1],dossier+info[3]) #deplace des fichier
 	for i in info:
 		fichier.write(i+"\n")
 	fichier.close()
