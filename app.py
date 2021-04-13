@@ -4,6 +4,7 @@ from protocole import Protocole
 from tkinter import filedialog
 from tkinter import PhotoImage
 from speech import Speech
+from graph import Graph
 
 #sudo apt-get install python3-pil python3-pil.imagetk
 import os
@@ -249,12 +250,16 @@ def callback(*args):
 expe = Experimentation()
 application = Application(expe)
 speech = Speech()
+graph = Graph()
+
+graph.readFile("Roehrig", "lel")
 
 speech.speakSentence('Hello World !', 'bonjour')
 
 
 
 pro = Protocole("test")
+
 
 while True:
 	application.window.update_idletasks()

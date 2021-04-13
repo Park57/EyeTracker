@@ -40,20 +40,27 @@ class Graph:
         #2D array with the coord x,y
         z = np.column_stack((dataX, dataY))
 
-        
+        plt.figure(1,figsize=(15,8))
+        plt.subplot(3,3,2)
         plt.scatter(dataX,dataY)
-
         plt.title('Nuage de points représentant coordonnées X et Y du regard sur l\'écran')
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.savefig('data/sauvegarde/'+dossier+'/graphique.png')
+        i = 1
+        plt.subplot(3,3,8)
+        plt.scatter(dataX,dataY)
+
+        plt.title('Nuage de points avec suivi du regard')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        while i < len(dataX):
+            print(i)
+            plt.annotate('', xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
+            i += 1
+        plt.savefig('data/sauvegarde/'+dossier+'/graphics.png')
         plt.show()
 
         
-
-
-
-
 
 
             
