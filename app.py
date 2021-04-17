@@ -252,7 +252,7 @@ application = Application(expe)
 speech = Speech()
 graph = Graph()
 
-graph.readFile("Roehrig", "lel")
+graph.readFile("Roehrig")
 
 speech.speakSentence('Hello World !', 'bonjour')
 
