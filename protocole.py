@@ -17,9 +17,16 @@ class Protocole:
 
 
 	def recupererInfo(self,dossier):
-		fichier = open('data/sauvegarde/'+dossier, 'r')
+		fichier = open('data/protocole/'+dossier, 'r')
 		for ligne in fichier:
 			#print(ligne.split(':')[0])
 			a=1
 
 		fichier.close()
+
+	def recupererFichier(self):
+		self.repfic = filedialog.askopenfilename(title="Ouvrir le fichier:", initialdir=self.rep,
+						initialfile=self.fic, filetypes = [("All", "*"),("Fichiers Python","*.py;*.pyw")])
+		if len(self.repfic) > 0:
+			self.rep=os.path.dirname(self.repfic)
+			self.fic=os.path.basename(self.repfic)

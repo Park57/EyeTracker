@@ -4,7 +4,6 @@ from protocole import Protocole
 from tkinter import filedialog
 from tkinter import PhotoImage
 from speech import Speech
-from graph import Graph
 
 #sudo apt-get install python3-pil python3-pil.imagetk
 import os
@@ -12,6 +11,7 @@ import PIL
 from PIL import ImageTk
 from PIL import Image
 from nouveauProtocole import *
+from opendata import *
 # pip install pillow
 
 # creation fenêtre
@@ -110,7 +110,7 @@ class Application :
 		self.button_synthesis.pack()
 		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 
-		self.button_add = Button(self.window, text="add protocole",command=nouveauProtocole)
+		self.button_add = Button(self.window, text="add protocole",command=lambda : nouveauProtocole(self))
 		self.button_add.pack()
 
 		self.button_start = Button(self.window, text="Start experimation",command=self.launch_an_experimentation)
@@ -157,14 +157,20 @@ class Application :
 		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
 	def create_multiple(self):
 
-		x = ["Experience Photo", "Video Homme", "Video Femme", "Photo Visage", "Photo objet"]
-		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=len(x) )
+		x = repucProtocole()
+		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=min(len(x),10) )
 		self.list.pack()
 
 		for each_item in range(len(x)):
 			self.list.insert(END, x[each_item])
 			self.list.activate(each_item)
 
+	def updateList(self,name):
+		size = self.list.size()
+		self.list.insert(END, name)
+		self.list.activate(size)
+		#self.list.pack()
+		print(name)
 	def create_scales(self):
 
 		self.scale_data = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=30, to=60, resolution=30)
@@ -239,8 +245,6 @@ def callback(*args):
 	application.button_start.configure(text="The selected item is {}".format(application.variable.get()))
 
 
-
-
 ##### MAIN ########
 
 # afficher la fenêtre
@@ -250,16 +254,12 @@ def callback(*args):
 expe = Experimentation()
 application = Application(expe)
 speech = Speech()
-graph = Graph()
-
-graph.readFile("Roehrig")
 
 speech.speakSentence('Hello World !', 'bonjour')
 
 
 
 pro = Protocole("test")
-
 
 while True:
 	application.window.update_idletasks()

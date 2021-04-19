@@ -20,6 +20,11 @@ def repucData(list):
 
 		fichier.close()
 
+
+def repucProtocole():
+	return os.listdir('data/protocole/')
+	#for dossier in os.listdir('data/protocole/')
+
 def sauvegarderInfo(info):
 	#info : nom,
 	dossier = 'data/protocole/'+info[2]+'/'
