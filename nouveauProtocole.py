@@ -36,7 +36,7 @@ def nouveauProtocole(base):
 	input_name.pack()
 	input_name.place(x=width_window /2,y=height_window*2/4 )
 	window.mainloop()
-	print('yo')
+
 	#canvas = Canvas(window,width = width_window,height=height_window)
 	#canvas.pack(expand=YES, fill=BOTH)
 def aa(b):
@@ -47,8 +47,9 @@ def annule(window):
 	window.destroy()
 def valider(name,base,volume):
 	global a
-	print("volume ",volume)
-	base.updateList(name)
-	sauvegarderInfo(["testDeux",a[0], name,a[2]])
+
+	if sauvegarderInfo(name,a[0],a[2],volume) :
+		base.updateList(name)
+
 
 

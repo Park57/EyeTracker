@@ -20,21 +20,35 @@ def repucData(list):
 
 		fichier.close()
 
+def repucProtocolee(nomProtocole):
+	liste = []
+	fichier = open('data/protocole/'+nomProtocole+'/info', 'r')
+	for ligne in fichier:
+		liste.append(ligne)
+	fichier.close()
+	return liste
 
 def repucProtocole():
 	return os.listdir('data/protocole/')
 	#for dossier in os.listdir('data/protocole/')
 
-def sauvegarderInfo(info):
+def sauvegarderInfo(nomProtocole, adressImage,nomImage,temps):
 	#info : nom,
-	dossier = 'data/protocole/'+info[2]+'/'
+	dossier = 'data/protocole/'+nomProtocole+'/'
 	try:
 		os.mkdir(dossier)
 	except:
 		print('dossier deja existant')
-
+		return False
+	newAdress =  dossier + nomImage
+	shutil.copy(adressImage,newAdress) #deplace des fichier
 	fichier = open(dossier+"info", 'w')
-	shutil.copy(info[1],dossier+info[3]) #deplace des fichier
-	for i in info:
-		fichier.write(i+"\n")
+
+	fichier.write(nomProtocole+"\n")
+	fichier.write(newAdress+"\n")
+	fichier.write(str(temps)+"\n")
 	fichier.close()
+	a = repucProtocolee(nomProtocole)
+	for b in a:
+		print(b)
+	return True
