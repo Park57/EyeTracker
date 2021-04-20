@@ -236,7 +236,8 @@ class Application :
 		img.place(x=0, y=0)
 
 	def launch_an_experimentation(self):
-		self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(1))
+		for i in range(self.list.size()):
+			self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(i))
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 

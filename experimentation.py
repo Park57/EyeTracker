@@ -59,7 +59,7 @@ class Experimentation :
             s = os.getcwd()
             image = ImageTk.PhotoImage(master=self.window ,file= s+'/'+ adressImage)
             self.canvas.create_image(50, 50, image=image, anchor=NW)
-             maxTime = temps
+            maxTime = int(temps)
         else:
             maxTime = 5
 
@@ -110,7 +110,7 @@ class Experimentation :
 
         #We delete the experimentation variable to remove the windows (easy and lazy method, better to pass the Tk window
         #in the experimetnation constructor ) TO DO
-        self.quit()
+        #self.quit()
 
 
     def quit(self):
