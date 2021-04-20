@@ -4,7 +4,7 @@ from protocole import Protocole
 from tkinter import filedialog
 from tkinter import PhotoImage
 from speech import Speech
-
+from calibration import *
 #sudo apt-get install python3-pil python3-pil.imagetk
 import os
 import PIL
@@ -12,8 +12,9 @@ from PIL import ImageTk
 from PIL import Image
 from nouveauProtocole import *
 from opendata import *
+from graph import Graph
 # pip install pillow
-
+#pip install seaborn
 # creation fenêtre
 
 
@@ -157,8 +158,8 @@ class Application :
 		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
 	def create_multiple(self):
 
-		x = repucProtocole()
-		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=min(len(x),10) )
+		x = repucProtocoles()
+		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=min(len(x) +1,10) )
 		self.list.pack()
 
 		for each_item in range(len(x)):
@@ -235,7 +236,8 @@ class Application :
 		img.place(x=0, y=0)
 
 	def launch_an_experimentation(self):
-		self.experimentation.start_experimentation(self.input_name.get(),'test')
+		self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(1))
+		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 
 
@@ -254,12 +256,10 @@ def callback(*args):
 expe = Experimentation()
 application = Application(expe)
 speech = Speech()
+graph = Graph()
 
+graph.readFile("Roehrig")
 speech.speakSentence('Hello World !', 'bonjour')
-
-
-
-pro = Protocole("test")
 
 while True:
 	application.window.update_idletasks()

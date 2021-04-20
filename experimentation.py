@@ -3,10 +3,11 @@ import time
 import cv2
 from tkinter import *
 from gaze_tracking import GazeTracking
-
+from opendata import repucProtocoleInfo
+#from opendata import *
 # creation fenêtre
-
-
+from PIL import ImageTk,Image
+import os
 class Experimentation :
 
     def __init__(self):
@@ -35,9 +36,9 @@ class Experimentation :
 
 
     #Method to start an new experimentation
-    def start_experimentation(self,directory,file):
+    def start_experimentation(self,directory,file,image = None):
         self.window = Tk()
-
+        liste = []
         self.width_window = self.window.winfo_screenwidth()
         self.height_window  = self.window.winfo_screenheight()
 
@@ -53,6 +54,14 @@ class Experimentation :
         self.canvas = Canvas(self.window,width = self.width_window,height=self.height_window)
         self.canvas.pack(expand=YES, fill=BOTH)
 
+        if image is not None:
+            nomProtocole,adressImage, temps = repucProtocoleInfo(image)
+            s = os.getcwd()
+            image = ImageTk.PhotoImage(master=self.window ,file= s+'/'+ adressImage)
+            self.canvas.create_image(50, 50, image=image, anchor=NW)
+             maxTime = temps
+        else:
+            maxTime = 5
 
         gaze = GazeTracking()
         webcam = cv2.VideoCapture(0)
@@ -64,7 +73,7 @@ class Experimentation :
             os.makedirs("data/sauvegarde/"+directory)
 
         #Timer variables
-        maxTime = 5
+
         tic = time.perf_counter()
         toc = time.perf_counter()
 
