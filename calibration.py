@@ -14,6 +14,10 @@ class Calibration :
         self.width_window = self.window.winfo_screenwidth()
         self.height_window  = self.window.winfo_screenheight()
 
+        #FULL SCREEN MODE
+        self.window.attributes("-fullscreen", True)
+        self.window.bind("<F11>", lambda event: self.window.attributes("-fullscreen", not self.window.attributes("-fullscreen")))
+        self.window.bind("<Escape>", lambda event: self.window.attributes("-fullscreen", False))
         # personnalisation de la fenêtre
 
         self.window.title("Calibration")
@@ -43,119 +47,96 @@ class Calibration :
         self.window.update_idletasks()
         self.window.update()
 
-    def start_calibration (self):
+    #Method to calibrate on one point ( ie , get the x and y of the screen coordinate for the current eyes position)
+    def calibrate_one_point(self ,point,gazeParam,webcamParam) :
         speech = Speech()
 
-
-        calibration.show_window()
-
-        self.draw_point(100,100)
-        time.sleep(1)
-        self.draw_point(self.width_window - 200,100)
-        time.sleep(1)
-        self.draw_point(self.width_window -200,self.height_window-150)
-        time.sleep(1)
-        self.draw_point(100,self.height_window-150)
-        time.sleep(1)
-        self.draw_point(self.width_window/2 -50,self.height_window/2 -50)
-
         #Les listes avec les points
-        listXleftPointHautDroit = []
-        listYleftPointHautDroit= []
+        listXleft = []
+        listYleft = []
 
-        listXleftPointHautGauche = []
-        listYleftPointHautGauche= []
+        listXright = []
+        listYright = []
 
-        listXleftPointBasGauche = []
-        listYleftPointBasGauche = []
 
+
+        gaze = gazeParam
+        webcam = webcamParam
+
+        speech.speakSentence(point, 'point')
+        time.sleep(2)
 
         #Timer variables
         maxTime = 5
         tic = time.perf_counter()
         toc = time.perf_counter()
+        #Collecte point HAUT GAUCHE
+        #We collect data until maxTime ( seconds )
+        while toc - tic < maxTime :
+            # We get a new frame from the webcam
+            _, frame = webcam.read()
+            # We send this frame to GazeTracking to analyze it
+            gaze.refresh(frame)
+            frame = gaze.annotated_frame()
+            if gaze.pupil_left_coords() != None :
+                xL,yL = gaze.pupil_left_coords()
+                listXleft.append(xL)
+                listYleft.append(yL)
+            if gaze.pupil_right_coords() != None :
+                xR,yR = gaze.pupil_right_coords()
+                listXright.append(xR)
+                listYright.append(yR)
+
+            toc = time.perf_counter()
+
+        xPointR = max(listXright,key=listXright.count)
+        yPointR = max(listYright,key=listYright.count)
+        xPointL = max(listXleft,key=listXleft.count)
+        yPointL = max(listYleft,key=listYleft.count)
+        #print("Calibrage pour point " + point + " : oeil gauche : ("+str(self.xValuePHG)+","+str(self.yValuePHG)+")")
+        x = (xPointR + xPointL)/2
+        y = (yPointR + yPointL)/2
+        return x,y
 
 
+    def start_calibration (self):
 
-
+        calibration.show_window()
         gaze = GazeTracking()
         webcam = cv2.VideoCapture(0)
 
-        speech.speakSentence('POINT HAUT GAUCHE !', 'PHD')
-        time.sleep(2)
-        #Collecte point HAUT GAUCHE
-        #We collect data until maxTime ( seconds )
-        while toc - tic < maxTime:
-            # We get a new frame from the webcam
-            _, frame = webcam.read()
-            # We send this frame to GazeTracking to analyze it
-            gaze.refresh(frame)
-            frame = gaze.annotated_frame()
-            if gaze.pupil_left_coords() != None :
-                x,y = gaze.pupil_left_coords()
-                listXleftPointHautGauche.append(x)
-                listYleftPointHautGauche.append(y)
-            right_pupil = gaze.pupil_right_coords()
+        #Point haut droit
+        self.draw_point(100,100)
+        time.sleep(1)
+        #print("Largeur fentre : " + str(self.width_window) + "longueur fentre : " +str(self.height_window))     #DEBUG
+        #Point haut gauche
+        self.draw_point(self.width_window - 100,100)
+        time.sleep(1)
+        #Point bas droite
+        self.draw_point(self.width_window -100,self.height_window-100)
+        time.sleep(1)
+        #Point bas gauche
+        self.draw_point(100,self.height_window-100)
+        time.sleep(1)
+        #Point milieu
+        self.draw_point(self.width_window/2 ,self.height_window/2 )
 
-            toc = time.perf_counter()
 
-        speech.speakSentence('POINT HAUT DROIT !', 'PHD')
-        time.sleep(2)
-
-        #Point HAUT DROIT
-        maxTime = 5
-        tic = time.perf_counter()
-        toc = time.perf_counter()
-        while toc - tic < maxTime:
-            # We get a new frame from the webcam
-            _, frame = webcam.read()
-            # We send this frame to GazeTracking to analyze it
-            gaze.refresh(frame)
-            frame = gaze.annotated_frame()
-            if gaze.pupil_left_coords() != None :
-                x,y = gaze.pupil_left_coords()
-                listXleftPointHautDroit.append(x)
-                listYleftPointHautDroit.append(y)
-            right_pupil = gaze.pupil_right_coords()
-
-            toc = time.perf_counter()
-
-        speech.speakSentence('POINT BAS DROITE !', 'PHD')
-        time.sleep(2)
-
-        #Point BAS GAUCHE
-        maxTime = 5
-        tic = time.perf_counter()
-        toc = time.perf_counter()
-        while toc - tic < maxTime:
-            # We get a new frame from the webcam
-            _, frame = webcam.read()
-            # We send this frame to GazeTracking to analyze it
-            gaze.refresh(frame)
-            frame = gaze.annotated_frame()
-            if gaze.pupil_left_coords() != None :
-                x,y = gaze.pupil_left_coords()
-                listXleftPointBasGauche.append(x)
-                listYleftPointBasGauche.append(y)
-            right_pupil = gaze.pupil_right_coords()
-
-            toc = time.perf_counter()
-
-        self.xValuePHG = max(listXleftPointHautGauche,key=listXleftPointHautGauche.count)
-        self.yValuePHG = max(listYleftPointHautGauche,key=listYleftPointHautGauche.count)
-        print("Calibrage pour point (100,100) : oeil gauche : ("+str(self.xValuePHG)+","+str(self.yValuePHG)+")")
-
-        self.xValuePHD = max(listXleftPointHautDroit,key=listXleftPointHautDroit.count)
+        '''self.xValuePHD = max(listXleftPointHautDroit,key=listXleftPointHautDroit.count)
         self.yValuePHD = max(listYleftPointHautDroit,key=listYleftPointHautDroit.count)
-        print("Calibrage pour point (1800,100) : oeil gauche : ("+str(self.xValuePHD)+","+str(self.yValuePHD)+")")
+        print("Calibrage pour point (1820,100) : oeil gauche : ("+str(self.xValuePHD)+","+str(self.yValuePHD)+")")
 
         self.xValuePBG = max(listXleftPointBasGauche,key=listXleftPointBasGauche.count)
         self.yValuePBG = max(listYleftPointBasGauche,key=listYleftPointBasGauche.count)
         print("Calibrage pour point (100,800) : oeil gauche : ("+str(self.xValuePBG)+","+str(self.yValuePBG)+")")
+        '''
 
+        self.xValuePHG,self.yValuePHG = self.calibrate_one_point("Point haut gauche",gaze,webcam)
+        self.xValuePHD,self.yValuePBG = self.calibrate_one_point("Point haut droite",gaze,webcam)
+        self.xValuePBG,self.yValuePBG = self.calibrate_one_point("Point bas gauche",gaze,webcam)
 
-        calibrageX = 1700/abs(self.xValuePHG - self.xValuePHD)
-        calibrageY = 800/abs(self.yValuePHG - self.yValuePBG)
+        calibrageX = 1720/abs(self.xValuePHG - self.xValuePHD)
+        calibrageY = 880/abs(self.yValuePHG - self.yValuePBG)
         print("Calibrage x : "+ str(calibrageX))
         print("Calibrage y :" + str(calibrageY))
 
@@ -165,10 +146,14 @@ class Calibration :
             # We send this frame to GazeTracking to analyze it
             gaze.refresh(frame)
             frame = gaze.annotated_frame()
-            if gaze.pupil_left_coords() != None :
-                x,y = gaze.pupil_left_coords()
-                xPoint = (x - self.xValuePHG) * calibrageX
-                yPoint = (y - self.yValuePHG) * calibrageY
+            if gaze.pupil_left_coords() != None  and gaze.pupil_right_coords() != None:
+                xLeftEye,yLeftEye = gaze.pupil_left_coords()
+                xRightEye,yRightEye = gaze.pupil_right_coords()
+
+                x = (xRightEye + xLeftEye)/2
+                y = (yRightEye + yLeftEye)/2
+                xPoint = abs(x - self.xValuePHG) * calibrageX
+                yPoint = abs(y - self.yValuePHG) * calibrageY
                 self.draw_point(-xPoint,yPoint)
                 print("New Point : (" +str(-xPoint)+","+str(yPoint)+")" )
 

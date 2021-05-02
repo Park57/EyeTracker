@@ -4,7 +4,7 @@ from experimentation import Experimentation
 from gaze_tracking import GazeTracking
 from tkinter import filedialog
 from tkinter import PhotoImage
-from plots import *
+#from plots import *
 
 class Protocole:
 	def __init__(self,dossier=None):
