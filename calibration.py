@@ -135,8 +135,10 @@ class Calibration :
         self.xValuePHD,self.yValuePBG = self.calibrate_one_point("Point haut droite",gaze,webcam)
         self.xValuePBG,self.yValuePBG = self.calibrate_one_point("Point bas gauche",gaze,webcam)
 
-        calibrageX = 1720/abs(self.xValuePHG - self.xValuePHD)
-        calibrageY = 880/abs(self.yValuePHG - self.yValuePBG)
+        calibrageX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
+        calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
+        #print("equal 1 "+ str( self.width_window-200))     #DEBUG
+        #print("equal 2 "+ str(self.height_window-200))     #DEBUG
         print("Calibrage x : "+ str(calibrageX))
         print("Calibrage y :" + str(calibrageY))
 
@@ -154,8 +156,8 @@ class Calibration :
                 y = (yRightEye + yLeftEye)/2
                 xPoint = abs(x - self.xValuePHG) * calibrageX
                 yPoint = abs(y - self.yValuePHG) * calibrageY
-                self.draw_point(-xPoint,yPoint)
-                print("New Point : (" +str(-xPoint)+","+str(yPoint)+")" )
+                self.draw_point(xPoint,yPoint)
+                print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
 
 if __name__ == "__main__":
 
