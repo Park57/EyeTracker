@@ -6,6 +6,7 @@ import  seaborn  as  sns
 import  pandas  as  pd
 import os
 from scipy.interpolate import griddata
+import math
 
 
 
@@ -42,13 +43,13 @@ class Graph:
                         lengthX = len(coordX)
                         coordX = coordX[1:lengthX]
 
-                        coordY = re.search(",\d*",line)
+                        coordY = re.search(",.\d*",line)
                         coordY = coordY.group()
                         lengthY = len(coordY)
                         coordY = coordY[1:lengthY]
-                        if(int(coordX) <= width and int(coordY) <= height):
+                        if((int(coordX) <= width and int(coordY) <= height) and (int(coordX)  >= 0 and int(coordY) >= 0)):
                             dataX = np.append(dataX,int(coordX))
-                            dataY = np.append(dataY,int(height-int(coordY)))
+                            dataY = np.append(dataY,int(coordY))
                         #print(dataX) #DEBUG
                         #print(dataY) #DEBUG
 
@@ -59,8 +60,8 @@ class Graph:
 
                 plt.figure(1,figsize=(15,8))
                 plt.scatter(dataX,dataY)
-                plt.xlim(-100,width+100)
-                plt.ylim(-100,height+100)
+                plt.xlim(-50,width+100)
+                plt.ylim(-50,height+100)
                 plt.title('Nuage de points représentant coordonnées X et Y du regard sur l\'écran')
                 plt.xlabel('x')
                 plt.ylabel('y')
@@ -68,21 +69,21 @@ class Graph:
                 plt.show()
                 plt.figure(1,figsize=(15,8))
                 plt.scatter(dataX,dataY)
-                plt.xlim(-100,width+100)
-                plt.ylim(-100,height+100)
+                plt.xlim(-50,width+100)
+                plt.ylim(-50,height+100)
                 plt.title('Nuage de points avec suivi du regard')
                 plt.xlabel('x')
                 plt.ylabel('y')
                 while i < len(dataX):
-                    if(max(dataX[i],dataY[i]) - min(dataX[i],dataY[i])  > 400 or max(dataX[i-1],dataY[i-1]) - min(dataX[i-1],dataY[i-1]) > 400):
+                    if(math.sqrt(((dataX[i]-dataX[i-1])*(dataX[i]-dataX[i-1]))+(dataY[i]-dataY[i-1])*(dataY[i]-dataY[i-1]))> 100):
                         plt.annotate('', xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
                     i += 1
                 plt.savefig('data/sauvegarde/'+dossier+'/graphics'+str(k)+'.png')
                 k += 1
                 plt.show()
                 plt.figure(1,figsize=(15,8))
-                #plt.xlim(-100,width+100)
-                #plt.ylim(-100,height+100)
+                plt.xlim(-50,width+100)
+                plt.ylim(-50,height+100)
                 plt.hist2d(dataX, dataY, bins=(300, 300), cmap=plt.cm.Reds)
                 plt.colorbar()
                 plt.show()
