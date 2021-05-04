@@ -158,7 +158,7 @@ class Application :
 	def create_multiple(self):
 
 		x = repucProtocoles()
-		self.list = Listbox(self.window, selectmode = "multiple",bg="red",selectbackground = "green",height=min(len(x) +1,10) )
+		self.list = Listbox(self.window, selectmode = "multiple",bg="green",selectbackground = "red",height=min(len(x) +1,10) )
 		self.list.pack()
 
 		for each_item in range(len(x)):
@@ -170,7 +170,7 @@ class Application :
 		self.list.insert(END, name)
 		self.list.activate(size)
 		#self.list.pack()
-		#print(name)
+		print(name)
 	def create_scales(self):
 
 		self.scale_data = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=30, to=60, resolution=30)
@@ -236,8 +236,7 @@ class Application :
 
 	def launch_an_experimentation(self):
 		for i in range(self.list.size()):
-			if self.list.selection_includes(i) == 1:
-				self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(i))
+			self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(i))
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 
@@ -256,7 +255,6 @@ class Application :
 
 expe = Experimentation()
 application = Application(expe)
-speech = Speech()
 graph = Graph()
 
 # graph.readFile("Roehrig")
