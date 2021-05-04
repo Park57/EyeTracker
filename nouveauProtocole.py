@@ -22,7 +22,7 @@ def nouveauProtocole(base):
 	button_annule = Button(window, text="annulé",command= lambda: annule(window))
 	button_annule.pack(pady = 30 ,side=BOTTOM)
 
-	scale_volume = Scale(window, bg='#4C4B4B', orient=HORIZONTAL,from_=0, to=30, resolution=1)
+	scale_volume = Scale(window, bg='#4C4B4B', orient=HORIZONTAL,from_=3, to=30, resolution=1)
 	scale_volume.pack()
 	scale_volume.place(x=width_window *2/4,y=height_window*2/6)
 	button_valider = Button(window, text="valider",command= lambda: (valider(input_name.get(),base,scale_volume.get()),annule(window)))

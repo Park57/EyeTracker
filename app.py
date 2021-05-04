@@ -1,6 +1,5 @@
 from tkinter import *
 from experimentation import Experimentation
-from protocole import Protocole
 from tkinter import filedialog
 from tkinter import PhotoImage
 from speech import Speech
@@ -103,7 +102,7 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image ?",command=self.upload)
+		self.button_upload = Button(self.window, text="Upload new image ?")
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
@@ -212,28 +211,28 @@ class Application :
 			self.list.place (x=self.x* 2/5, y=self.y*2/8 +25)
 			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
 
-	def repertoiredetravail(self):
-		self.repfic = filedialog.askopenfilename(title="Ouvrir le fichier:", initialdir=self.rep,
-						initialfile=self.fic, filetypes = [("All", "*"),("Fichiers Python","*.py;*.pyw")])
-		if len(self.repfic) > 0:
-			self.rep=os.path.dirname(self.repfic)
-			self.fic=os.path.basename(self.repfic)
+	# def repertoiredetravail(self):
+	# 	self.repfic = filedialog.askopenfilename(title="Ouvrir le fichier:", initialdir=self.rep,
+	# 					initialfile=self.fic, filetypes = [("All", "*"),("Fichiers Python","*.py;*.pyw")])
+	# 	if len(self.repfic) > 0:
+	# 		self.rep=os.path.dirname(self.repfic)
+	# 		self.fic=os.path.basename(self.repfic)
 
 
 
-	def upload(self):
-		y = self.list.curselection()
-		print(y)
-		self.repertoiredetravail()
+	# def upload(self):
+	# 	y = self.list.curselection()
+	# 	print(y)
+	# 	self.repertoiredetravail()
 
-		load = Image.open(self.repfic)
-		render = ImageTk.PhotoImage(load)
-		#img = Label(self.im, image=render)
-		#ça marche pas et je sais pas pk
-		img = Label(self.window, image=render)
+	# 	load = Image.open(self.repfic)
+	# 	render = ImageTk.PhotoImage(load)
+	# 	#img = Label(self.im, image=render)
+	# 	#ça marche pas et je sais pas pk
+	# 	img = Label(self.window, image=render)
 
-		img.image = render
-		img.place(x=0, y=0)
+	# 	img.image = render
+	# 	img.place(x=0, y=0)
 
 	def launch_an_experimentation(self):
 		for i in range(self.list.size()):
@@ -244,9 +243,9 @@ class Application :
 
 
 
-def callback(*args):
-	#print(app.variable)
-	application.button_start.configure(text="The selected item is {}".format(application.variable.get()))
+# def callback(*args):
+# 	#print(app.variable)
+# 	application.button_start.configure(text="The selected item is {}".format(application.variable.get()))
 
 
 ##### MAIN ########
@@ -260,8 +259,8 @@ application = Application(expe)
 speech = Speech()
 graph = Graph()
 
-graph.readFile("Roehrig")
-speech.speakSentence('Hello World !', 'bonjour')
+# graph.readFile("Roehrig")
+# speech.speakSentence('Hello World !', 'bonjour')
 
 while True:
 	application.window.update_idletasks()

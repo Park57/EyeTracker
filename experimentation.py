@@ -110,7 +110,7 @@ class Experimentation :
 
         #We delete the experimentation variable to remove the windows (easy and lazy method, better to pass the Tk window
         #in the experimetnation constructor ) TO DO
-        #self.quit()
+        self.quit()
 
 
     def quit(self):
