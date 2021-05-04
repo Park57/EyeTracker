@@ -238,12 +238,9 @@ class Application :
 		calibration = Calibration()
 		calibration.start_calibration()
 		for i in range(self.list.size()):
-<<<<<<< HEAD
 			if self.list.selection_includes(i) == 1:
 				self.experimentation.start_experimentation(self.input_name.get(),'test',calibration,self.list.get(i))
-=======
-			self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(i))
->>>>>>> 0bc98bc23ecefc4e1c283cf2cc088d19d1414bfa
+
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 
