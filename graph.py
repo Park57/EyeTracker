@@ -38,31 +38,35 @@ class Graph:
                     coordY = coordY[1:lengthY]
                     dataX = np.append(dataX,int(coordX))
                     dataY = np.append(dataY,int(coordY))
-                    print(dataX) #DEBUG
-                    print(dataY) #DEBUG
+                    #print(dataX) #DEBUG
+                    #print(dataY) #DEBUG
             
                 #2D array with the coord x,y
                 z = np.column_stack((dataX, dataY))
 
                 plt.figure(1,figsize=(15,8))
-                plt.subplot(3,3,2)
                 plt.scatter(dataX,dataY)
                 plt.title('Nuage de points représentant coordonnées X et Y du regard sur l\'écran')
                 plt.xlabel('x')
                 plt.ylabel('y')
                 i = 1
-                plt.subplot(3,3,8)
+                plt.show()
+                plt.figure(1,figsize=(15,8))
                 plt.scatter(dataX,dataY)
-
                 plt.title('Nuage de points avec suivi du regard')
                 plt.xlabel('x')
                 plt.ylabel('y')
                 while i < len(dataX):
-                    print(i)
-                    plt.annotate('', xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
+                    #print(i)
+                    if(abs(dataX[i]-dataX[i-1]) > 200 and abs(dataY[i]-dataY[i-1] > 200)):
+                        plt.annotate('', xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
                     i += 1
                 plt.savefig('data/sauvegarde/'+dossier+'/graphics'+str(k)+'.png')
                 k += 1
+                plt.show()
+                plt.figure(1,figsize=(15,8))
+                plt.hist2d(dataX, dataY, bins=(300, 300), cmap=plt.cm.Reds)
+                plt.colorbar()
                 plt.show()
 
 
