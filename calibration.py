@@ -48,8 +48,9 @@ class Calibration :
         self.window.update()
 
     #Method to calibrate on one point ( ie , get the x and y of the screen coordinate for the current eyes position)
-    def calibrate_one_point(self ,point,gazeParam,webcamParam) :
-        speech = Speech()
+    def calibrate_one_point(self,gazeParam,webcamParam) :
+
+        time.sleep(1)
 
         #Les listes avec les points
         listXleft = []
@@ -63,8 +64,7 @@ class Calibration :
         gaze = gazeParam
         webcam = webcamParam
 
-        speech.speakSentence(point, 'point')
-        time.sleep(2)
+
 
         #Timer variables
         maxTime = 5
@@ -98,6 +98,27 @@ class Calibration :
         y = (yPointR + yPointL)/2
         return x,y
 
+    def clignotePoint(self,x,y,point) :
+        speech = Speech()
+        speech.speakSentence(point, 'point')
+        i = 0
+        while i < 4:
+            time.sleep(0.25)
+            self.draw_point(x,y)
+            time.sleep(0.25)
+            self.canvas.delete("all")
+            self.window.update_idletasks()
+            self.window.update()
+            i = i + 1
+
+        self.draw_point(x,y)
+
+    def getScreenCoord(self,xLeftEye,xRightEye,yLeftEye,yRightEye):
+        x = (xRightEye + xLeftEye)/2
+        y = (yRightEye + yLeftEye)/2
+        xPoint = abs(x - self.xValuePHG) * self.calibrageX
+        yPoint = abs(y - self.yValuePHG) * self.calibrageY
+        return xPoint,yPoint
 
     def start_calibration (self):
 
@@ -120,6 +141,10 @@ class Calibration :
         time.sleep(1)
         #Point milieu
         self.draw_point(self.width_window/2 ,self.height_window/2 )
+        time.sleep(1)
+        self.canvas.delete("all")
+        self.window.update_idletasks()
+        self.window.update()
 
 
         '''self.xValuePHD = max(listXleftPointHautDroit,key=listXleftPointHautDroit.count)
@@ -130,17 +155,22 @@ class Calibration :
         self.yValuePBG = max(listYleftPointBasGauche,key=listYleftPointBasGauche.count)
         print("Calibrage pour point (100,800) : oeil gauche : ("+str(self.xValuePBG)+","+str(self.yValuePBG)+")")
         '''
+        self.clignotePoint(100,100,"Point haut gauche")
+        self.xValuePHG,self.yValuePHG = self.calibrate_one_point(gaze,webcam)
+        self.clignotePoint(self.width_window-100,100,"Point haut droite")
+        self.xValuePHD,self.yValuePBG = self.calibrate_one_point(gaze,webcam)
+        self.clignotePoint(100,self.height_window-100,"Point bas gauche")
+        self.xValuePBG,self.yValuePBG = self.calibrate_one_point(gaze,webcam)
 
-        self.xValuePHG,self.yValuePHG = self.calibrate_one_point("Point haut gauche",gaze,webcam)
-        self.xValuePHD,self.yValuePBG = self.calibrate_one_point("Point haut droite",gaze,webcam)
-        self.xValuePBG,self.yValuePBG = self.calibrate_one_point("Point bas gauche",gaze,webcam)
-
-        calibrageX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
-        calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
+        self.calibrageX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
+        self.calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
         #print("equal 1 "+ str( self.width_window-200))     #DEBUG
         #print("equal 2 "+ str(self.height_window-200))     #DEBUG
-        print("Calibrage x : "+ str(calibrageX))
-        print("Calibrage y :" + str(calibrageY))
+        print("Calibrage x : "+ str(self.calibrageX))
+        print("Calibrage y :" + str(self.calibrageY))
+
+        f = open("testCoord.txt", "w")
+        f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
 
         while True :
             # We get a new frame from the webcam
@@ -152,12 +182,15 @@ class Calibration :
                 xLeftEye,yLeftEye = gaze.pupil_left_coords()
                 xRightEye,yRightEye = gaze.pupil_right_coords()
 
-                x = (xRightEye + xLeftEye)/2
+                '''x = (xRightEye + xLeftEye)/2
                 y = (yRightEye + yLeftEye)/2
                 xPoint = abs(x - self.xValuePHG) * calibrageX
-                yPoint = abs(y - self.yValuePHG) * calibrageY
+                yPoint = abs(y - self.yValuePHG) * calibrageY'''
+                xPoint,yPoint = self.getScreenCoord(xLeftEye,xRightEye,yLeftEye,yRightEye)
                 self.draw_point(xPoint,yPoint)
                 print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
+                f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
+        f.close()
 
 if __name__ == "__main__":
 
