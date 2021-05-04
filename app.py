@@ -235,9 +235,11 @@ class Application :
 	# 	img.place(x=0, y=0)
 
 	def launch_an_experimentation(self):
+		calibration = Calibration()
+		calibration.start_calibration()
 		for i in range(self.list.size()):
 			if self.list.selection_includes(i) == 1:
-				self.experimentation.start_experimentation(self.input_name.get(),'test',self.list.get(i))
+				self.experimentation.start_experimentation(self.input_name.get(),'test',calibration,self.list.get(i))
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 

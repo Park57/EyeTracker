@@ -107,8 +107,7 @@ class Calibration :
             self.draw_point(x,y)
             time.sleep(0.25)
             self.canvas.delete("all")
-            self.window.update_idletasks()
-            self.window.update()
+            self.show_window()
             i = i + 1
 
         self.draw_point(x,y)
@@ -122,7 +121,7 @@ class Calibration :
 
     def start_calibration (self):
 
-        calibration.show_window()
+        self.show_window()
         gaze = GazeTracking()
         webcam = cv2.VideoCapture(0)
 
@@ -143,8 +142,7 @@ class Calibration :
         self.draw_point(self.width_window/2 ,self.height_window/2 )
         time.sleep(1)
         self.canvas.delete("all")
-        self.window.update_idletasks()
-        self.window.update()
+        self.show_window()
 
 
         '''self.xValuePHD = max(listXleftPointHautDroit,key=listXleftPointHautDroit.count)
@@ -169,10 +167,10 @@ class Calibration :
         print("Calibrage x : "+ str(self.calibrageX))
         print("Calibrage y :" + str(self.calibrageY))
 
-        f = open("testCoord.txt", "w")
-        f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
+        #f = open("testCoord.txt", "w")
+        #f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
 
-        while True :
+        '''while True :
             # We get a new frame from the webcam
             _, frame = webcam.read()
             # We send this frame to GazeTracking to analyze it
@@ -182,16 +180,16 @@ class Calibration :
                 xLeftEye,yLeftEye = gaze.pupil_left_coords()
                 xRightEye,yRightEye = gaze.pupil_right_coords()
 
-                '''x = (xRightEye + xLeftEye)/2
+                x = (xRightEye + xLeftEye)/2
                 y = (yRightEye + yLeftEye)/2
                 xPoint = abs(x - self.xValuePHG) * calibrageX
-                yPoint = abs(y - self.yValuePHG) * calibrageY'''
+                yPoint = abs(y - self.yValuePHG) * calibrageY######
                 xPoint,yPoint = self.getScreenCoord(xLeftEye,xRightEye,yLeftEye,yRightEye)
                 self.draw_point(xPoint,yPoint)
                 print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
                 f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
-        f.close()
-
+        f.close()'''
+        self.window.quit()
 if __name__ == "__main__":
 
     calibration = Calibration()

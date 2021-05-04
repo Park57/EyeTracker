@@ -23,6 +23,11 @@ class Experimentation :
         x2, y2 = (ratioX *self.width_window+10), (ratioY * self.height_window +10)
         self.canvas.create_oval(x1, y1, x2, y2, fill=python_green)
 
+    #Method to draw a point
+    def draw_point(self,x,y):
+        self.canvas.create_oval(x+10, y+10, x-10, y-10, fill="#FF0000")
+        self.window.update_idletasks()
+        self.window.update()
 
 
     #Method to save the data
@@ -36,11 +41,14 @@ class Experimentation :
 
 
     #Method to start an new experimentation
-    def start_experimentation(self,directory,file,image = None):
+    def start_experimentation(self,directory,file,calibration,image = None):
         self.window = Tk()
         liste = []
         self.width_window = self.window.winfo_screenwidth()
         self.height_window  = self.window.winfo_screenheight()
+        self.window.attributes("-fullscreen", True)
+        self.window.bind("<F11>", lambda event: self.window.attributes("-fullscreen", not self.window.attributes("-fullscreen")))
+        self.window.bind("<Escape>", lambda event: self.window.attributes("-fullscreen", False))
 
         # personnalisation de la fenêtre
 
@@ -77,6 +85,26 @@ class Experimentation :
         tic = time.perf_counter()
         toc = time.perf_counter()
 
+        while toc - tic < maxTime :
+            # We get a new frame from the webcam
+            _, frame = webcam.read()
+            # We send this frame to GazeTracking to analyze it
+            gaze.refresh(frame)
+            frame = gaze.annotated_frame()
+            if gaze.pupil_left_coords() != None  and gaze.pupil_right_coords() != None:
+                xLeftEye,yLeftEye = gaze.pupil_left_coords()
+                xRightEye,yRightEye = gaze.pupil_right_coords()
+
+                '''x = (xRightEye + xLeftEye)/2
+                y = (yRightEye + yLeftEye)/2
+                xPoint = abs(x - self.xValuePHG) * calibrageX
+                yPoint = abs(y - self.yValuePHG) * calibrageY'''
+                xPoint,yPoint = calibration.getScreenCoord(xLeftEye,xRightEye,yLeftEye,yRightEye)
+                self.draw_point(xPoint,yPoint)
+                print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
+                #f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
+        #f.close()
+        ''''
         #We collect data until maxTime ( seconds )
         while toc - tic < maxTime:
 
@@ -106,7 +134,7 @@ class Experimentation :
             self.window.update()
 
             #Get the time
-            toc = time.perf_counter()
+            toc = time.perf_counter()'''
 
         #We delete the experimentation variable to remove the windows (easy and lazy method, better to pass the Tk window
         #in the experimetnation constructor ) TO DO
