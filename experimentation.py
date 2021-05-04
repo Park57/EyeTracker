@@ -103,6 +103,7 @@ class Experimentation :
                 self.draw_point(xPoint,yPoint)
                 print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
                 #f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
+            toc = time.perf_counter()
         #f.close()
         ''''
         #We collect data until maxTime ( seconds )
