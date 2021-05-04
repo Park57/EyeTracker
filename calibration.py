@@ -164,8 +164,8 @@ class Calibration :
         self.calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
         #print("equal 1 "+ str( self.width_window-200))     #DEBUG
         #print("equal 2 "+ str(self.height_window-200))     #DEBUG
-        print("Calibrage x : "+ str(self.calibrageX))
-        print("Calibrage y :" + str(self.calibrageY))
+        # print("Calibrage x : "+ str(self.calibrageX))
+        # print("Calibrage y :" + str(self.calibrageY))
 
         #f = open("testCoord.txt", "w")
         #f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
@@ -189,7 +189,7 @@ class Calibration :
                 print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
                 f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
         f.close()'''
-        self.window.quit()
+        self.window.destroy()
 if __name__ == "__main__":
 
     calibration = Calibration()
