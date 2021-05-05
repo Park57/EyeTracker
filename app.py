@@ -259,9 +259,9 @@ class Application :
 
 expe = Experimentation()
 application = Application(expe)
-graph = Graph()
+#graph = Graph()
 
-# graph.readFile("Roehrig")
+#graph.readFile("Roehrig")
 # speech.speakSentence('Hello World !', 'bonjour')
 
 while True:
