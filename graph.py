@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import math
+import seaborn as sns
 
 
 
@@ -21,10 +22,10 @@ class Graph:
     def readFile(self,dossier):
         dataX = np.array([])
         dataY = np.array([])
-        l = 1
+        l = 1 # counter for files
         for element in os.listdir("data/sauvegarde/"+dossier):
             file = "data/sauvegarde/"+dossier+"/"+element
-            if(file.endswith('.txt')):
+            if(file.endswith('.txt')): # we don't care about others files than .txt
                 with open(file) as f:
                     content = f.readlines()
                     cpt = 0
@@ -37,7 +38,7 @@ class Graph:
                         width = int(ex[0:len(ex)-1])
                         height = int(ex2[1:len(ex)])
                         cpt = 1
-                    else: # 
+                    else: # for the rest of the file we get the coordinate X,Y of the gaze on the screen with regex
                         coordX = re.match("^\(\d*",line)
                         coordX= coordX.group()
                         lengthX = len(coordX)
@@ -47,7 +48,7 @@ class Graph:
                         coordY = coordY.group()
                         lengthY = len(coordY)
                         coordY = coordY[1:lengthY]
-                        if((int(coordX) <= width and int(coordY) <= height) and (int(coordX)  >= 0 and int(coordY) >= 0)):
+                        if((int(coordX) <= width and int(coordY) <= height) and (int(coordX)  >= 0 and int(coordY) >= 0)): # we don't care about gaze out of screen 
                             dataX = np.append(dataX,int(coordX))
                             dataY = np.append(dataY,int(coordY))
                 i = 1
@@ -57,10 +58,10 @@ class Graph:
                 plt.scatter(dataX,dataY)
                 plt.xlim(-50,width+100)
                 plt.ylim(-50,height+100)
-                plt.title('Nuage de points représentant coordonnées X et Y du regard sur l\'écran')
+                plt.title('clouds of points corresponding to the X Y coordinates of the gaze on the screen')
                 plt.xlabel('x')
                 plt.ylabel('y')
-                plt.savefig('data/sauvegarde/'+dossier+'/simple_graphic_image_'+str(l)+'.png')
+                plt.savefig('data/sauvegarde/'+dossier+'/simple_graphic_image_'+str(l)+'.png') 
                 plt.show()
 
 
@@ -69,12 +70,12 @@ class Graph:
                 plt.scatter(dataX,dataY)
                 plt.xlim(-50,width+100)
                 plt.ylim(-50,height+100)
-                plt.title('Nuage de points avec suivi du regard')
+                plt.title('point clouds with gaze tracking')
                 plt.xlabel('x')
                 plt.ylabel('y')
                 x = 1
                 while i < len(dataX):
-                    # distance euclidienne pour n'afficher que les flèches à une certaine distance
+                    # we use the Euclidean distance to display only arrows greater than 100 pixels 
                     if(math.sqrt(((dataX[i]-dataX[i-1])*(dataX[i]-dataX[i-1]))+(dataY[i]-dataY[i-1])*(dataY[i]-dataY[i-1]))> 100): 
                         plt.annotate('  '+str(x), xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
                         x += 1 
@@ -86,12 +87,13 @@ class Graph:
                 plt.figure(1,figsize=(15,8))
                 plt.xlim(-50,width+100)
                 plt.ylim(-50,height+100)
-                plt.hist2d(dataX, dataY, bins=(100, 100), cmap=plt.cm.Reds)
-                plt.colorbar()
-                plt.savefig('data/sauvegarde/'+dossier+'/2D_density_graphic_image_'+str(l)+'.png')
+                plt.title('contour plot of the gaze')
+                plt.xlabel('x')
+                plt.ylabel('y')
+                sns.kdeplot(dataX, y=dataY, cmap="Reds", shade=True, bw_adjust=.5)
+                plt.savefig('data/sauvegarde/'+dossier+'/contour_plot_image_'+str(l)+'.png')
                 plt.show()
                 l +=1
-        
 
 
         
