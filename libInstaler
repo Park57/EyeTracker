@@ -1,0 +1,5 @@
+sudo apt install mpg321
+pip3 install gtts
+sudo apt-get install python3-pil python3-pil.imagetk
+pip install pillow
+pip install seaborn
