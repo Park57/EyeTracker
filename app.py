@@ -19,7 +19,7 @@ from graph import Graph
 
 class Application :
 
-	def __init__(self,expe,graph):
+	def __init__(self,expe,graph,window):
 
 		self.experimentation = expe
 		self.graphe = graph
@@ -27,13 +27,21 @@ class Application :
 		self.fic = ""
 		self.repfic = ""
 		#im = self.repertoiredetravail()
-		print(self.repfic)
-		self.window = Tk()
+
+		self.window = window
+		self.image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/image1.jpg")
+		self.label1 = Label(self.window, image = self.image)
+		self.label1.pack()
+		self.label1.place(x = 0, y = 0)
+
 		#self.im = Tk()
+		# self.window.attributes('-alpha',0.5)
+		self.window.wm_attributes('-alpha',0.5)
 
 		self.x = self.window.winfo_screenwidth()
 		self.y = self.window.winfo_screenheight()
 		# personnalisation de la fenêtre
+
 
 		self.window.title("My application")
 		self.window.geometry(str(self.x)+"x"+str(self.y))
@@ -44,7 +52,7 @@ class Application :
 		#root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='/path/to/ico/icon.png')
 		#self.window.iconphoto(False, PhotoImage(file=self.repfic))
 
-		self.window.config(background='#4C4B4B')
+		#self.window.config(background='#4C4B4B')
 
 		self.label_title = Label()
 		self.input_name = Entry()
@@ -56,23 +64,34 @@ class Application :
 		self.button_add = Button()
 
 		self.label_data = Label()
+
 		self.label_image = Label()
 		self.label_sec = Label()
 		self.label_speech = Label()
 
 		self.data_check = Checkbutton()
+
 		self.graph_check = Checkbutton()
+
 
 		self.scale_data = Scale()
 		self.scale_volume = Scale()
 
 		self.list = Listbox()
 
+
 		#variable = StringVar(self.window)
 		self.create_widgets()
 
-	def create_widgets(self):
+		self.window.update_idletasks()
+		self.window.update()
+		self.updatePos()
+		self.window.mainloop()
 
+
+
+	def create_widgets(self):
+		#self.creatBg()
 		self.create_title()
 		self.create_buttons()
 		self.create_labels()
@@ -81,15 +100,18 @@ class Application :
 		self.create_multiple()
 
 		self.updatePos()
+	def creatBg(self):
+		image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/image1.jpg")
+		self.label1 = Label(self.window, image = image)
+		self.label1.pack()
+		self.label1.place(x = 0, y = 0)
 
 	def create_title(self):
 
 		# ajout du titre
-		self.label_title = Label(self.window, text="Experimentation parameters",
-							font=("Arial", 40), bg='#4C4B4B', fg='white')
+		self.label_title = Label(self.window, text="Experimentation parameters",font=("Arial", 40),bg='white')
 		self.label_title.pack()
-		self.label_title.place(height=self.y /4, width=self.x )
-
+		self.label_title.place(height= 50, width=self.x/2 )
 	def create_buttons(self):
 
 		# ajout champ de saisie
@@ -185,10 +207,11 @@ class Application :
 
 	def updatePos(self):
 		if self.x != self.window.winfo_width() or self.y != self.window.winfo_height() :
+			print(self.x , ' ' , self.y)
 			self.x = self.window.winfo_width()
 			self.y = self.window.winfo_height()
-
-			self.label_title.place(height=self.y /4, width=self.x )
+			self.label1.place(x = 0, y = 0)
+			self.label_title.place(x= self.x /4, y=self.y /10 )
 
 			self.input_name.place(x= self.x / 5, y =  self.y / 4)
 			self.input_surname.place(x=self.x *3/5, y= self.y /4)
@@ -211,6 +234,7 @@ class Application :
 
 			self.list.place (x=self.x* 2/5, y=self.y*2/8 +25)
 			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
+
 
 	# def repertoiredetravail(self):
 	# 	self.repfic = filedialog.askopenfilename(title="Ouvrir le fichier:", initialdir=self.rep,
@@ -262,12 +286,12 @@ class Application :
 
 expe = Experimentation()
 graph = Graph()
-application = Application(expe,graph)
+window = Tk()
+application = Application(expe,graph,window)
 
 
 
-while True:
-	application.window.update_idletasks()
-	application.window.update()
-	application.updatePos()
-
+# while True:
+# 	application.window.update_idletasks()
+# 	application.window.update()
+#
