@@ -19,10 +19,10 @@ from graph import Graph
 
 class Application :
 
-	def __init__(self,expe):
+	def __init__(self,expe,graph):
 
 		self.experimentation = expe
-
+		self.graphe = graph
 		self.rep=os.getcwd()
 		self.fic = ""
 		self.repfic = ""
@@ -236,12 +236,14 @@ class Application :
 	# 	img.place(x=0, y=0)
 
 	def launch_an_experimentation(self):
+		#self.graphe.readFile("Troll")
 		calibration = Calibration()
 		calibration.start_calibration()
 		for i in range(self.list.size()):
 			if self.list.selection_includes(i) == 1:
 				self.experimentation.start_experimentation(self.input_name.get(),str(self.list.get(i)),calibration,self.list.get(i))
 
+		self.graphe.readFile(self.input_name.get())
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 
 
@@ -259,11 +261,10 @@ class Application :
 
 
 expe = Experimentation()
-application = Application(expe)
-#graph = Graph()
+graph = Graph()
+application = Application(expe,graph)
 
-#graph.readFile("Roehrig")
-# speech.speakSentence('Hello World !', 'bonjour')
+
 
 while True:
 	application.window.update_idletasks()
