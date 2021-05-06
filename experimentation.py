@@ -64,17 +64,26 @@ class Experimentation :
 
         if image is not None:
             nomProtocole,adressImage, temps = repucProtocoleInfo(image)
+
             s = os.getcwd()
             image = ImageTk.PhotoImage(master=self.window ,file= s+'/'+ adressImage)
-            self.canvas.create_image(50, 50, image=image, anchor=NW)
+            self.canvas.create_image(0, 0, image=image, anchor=NW)
             maxTime = int(temps)
+            '''image = Image.open(s+'/'+ adressImage)
+            # The (450, 350) is (height, width)
+            image = image.resize((self.width_window,self.height_window), Image.ANTIALIAS)
+            my_img = ImageTk.PhotoImage(image)
+            my_img = Label(image = my_img)
+            my_img.pack()'''
+
+
         else:
             maxTime = 5
 
         gaze = GazeTracking()
         webcam = cv2.VideoCapture(0)
 
-        nbNoneConcecutif = 0
+        nbConsecutifNone = 0
 
         #Create folder if not exist , we name it with the name of the person (Name input)
         if not os.path.exists("data/sauvegarde/"+directory):
@@ -84,6 +93,9 @@ class Experimentation :
 
         tic = time.perf_counter()
         toc = time.perf_counter()
+
+        f = open("data/sauvegarde/"+directory +"/"+file, "w")
+        f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
 
         while toc - tic < maxTime :
             # We get a new frame from the webcam
@@ -101,10 +113,10 @@ class Experimentation :
                 yPoint = abs(y - self.yValuePHG) * calibrageY'''
                 xPoint,yPoint = calibration.getScreenCoord(xLeftEye,xRightEye,yLeftEye,yRightEye)
                 self.draw_point(xPoint,yPoint)
-                print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )
-                #f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
+                f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
+                #print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )   #DEBUG
             toc = time.perf_counter()
-        #f.close()
+        f.close()
         ''''
         #We collect data until maxTime ( seconds )
         while toc - tic < maxTime:
@@ -124,12 +136,12 @@ class Experimentation :
             if(ratioX != None and ratioY != None):
                 self.paint_eye_point(1.0 - ratioX,ratioY)
                 self.save_data(ratioX,ratioY,directory,'EXPE_NUM_1')
-                nbNoneConcecutif = 0
+                nbConsecutifNone = 0
             else :
-                if  nbNoneConcecutif >30000:
-                    nbNoneConcecutif = 0
+                if  nbConsecutifNone >30000:
+                    nbConsecutifNone = 0
                     self = Experimentation()
-                nbNoneConcecutif += 1
+                nbConsecutifNone += 1
 
             self.window.update_idletasks()
             self.window.update()

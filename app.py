@@ -136,9 +136,8 @@ class Application :
 		self.label_sec.pack()
 		#self.label_sec.place(x=self.x/5, y=self.y*4/8)
 
-		self.label_speech = Label(self.window, text="Volume speech synthesis",
-					 font=("Arial", 12), bg='#4C4B4B', fg='white')
-		self.label_speech.pack()
+		#self.label_speech = Label(self.window, text="Volume speech synthesis",font=("Arial", 12), bg='#4C4B4B', fg='white')
+		#self.label_speech.pack()
 		#self.label_speech.place(x=self.x* 3/5, y=self.y*4/8)
 
 
@@ -178,9 +177,11 @@ class Application :
 		#self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
 
 
-		self.scale_volume = Scale(self.window, bg='#4C4B4B', orient=HORIZONTAL,from_=0, to=100, resolution=1)
-		self.scale_volume.pack()
+		#self.scale_volume  = Scale(self.window,from_ = 0,to = 100,orient = HORIZONTAL ,resolution = 1)
+		#self.scale_volume.pack()
 		#self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
+
+
 
 	def updatePos(self):
 		if self.x != self.window.winfo_width() or self.y != self.window.winfo_height() :
@@ -200,13 +201,13 @@ class Application :
 			self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
 			self.label_image.place(x=self.x/5 +35, y=self.y*3/7)
 			self.label_sec.place(x=self.x/5, y=self.y*4/8)
-			self.label_speech.place(x=self.x* 3/5, y=self.y*4/8)
+			#self.label_speech.place(x=self.x* 3/5, y=self.y*4/8)
 
 			self.data_check.place(x=self.x/5, y=self.y*2/6)
 			self.graph_check.place(x=self.x/5, y=self.y*3/7)
 
 			self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
-			self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
+			#self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
 
 			self.list.place (x=self.x* 2/5, y=self.y*2/8 +25)
 			#app.input_name.place(x= self.x / 5, y =  self.y / 4)
@@ -239,7 +240,7 @@ class Application :
 		calibration.start_calibration()
 		for i in range(self.list.size()):
 			if self.list.selection_includes(i) == 1:
-				self.experimentation.start_experimentation(self.input_name.get(),'test',calibration,self.list.get(i))
+				self.experimentation.start_experimentation(self.input_name.get(),str(self.list.get(i)),calibration,self.list.get(i))
 
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 

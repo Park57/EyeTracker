@@ -12,5 +12,5 @@ class Speech:
     def speakSentence(self,sentence,file):
         myobj = gTTS(text=sentence, lang=self.language, slow=False)
         myobj.save("data/speech/"+file+".mp3")
-        os.system("mpg321 speech/"+file+".mp3")
+        os.system("mpg321 data/speech/"+file+".mp3")
         os.remove("data/speech/"+file+".mp3")

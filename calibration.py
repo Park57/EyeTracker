@@ -115,15 +115,23 @@ class Calibration :
     def getScreenCoord(self,xLeftEye,xRightEye,yLeftEye,yRightEye):
         x = (xRightEye + xLeftEye)/2
         y = (yRightEye + yLeftEye)/2
-        xPoint = abs(x - self.xValuePHG) * self.calibrageX
-        yPoint = abs(y - self.yValuePHG) * self.calibrageY
-        return xPoint,yPoint
+        xPoint1 = abs(x - self.xValuePHG) * self.calibrageX
+        #xPoint2 = abs(x - self.xValuePBG) * self.calibrageX
+        yPoint1 = abs(y - self.yValuePHG) * self.calibrageY
+        #yPoint2 = abs(y - self.yValuePHD) * self.calibrageY
+        #xPoint = (xPoint1 + xPoint2) /2
+        #yPoint = (xPoint1 + xPoint2) /2
+        return xPoint1,yPoint1
 
+    def calibre_face(self) :
+        self.show_window()
     def start_calibration (self):
+
 
         self.show_window()
         gaze = GazeTracking()
         webcam = cv2.VideoCapture(0)
+
 
         #Point haut droit
         self.draw_point(100,100)
@@ -153,15 +161,28 @@ class Calibration :
         self.yValuePBG = max(listYleftPointBasGauche,key=listYleftPointBasGauche.count)
         print("Calibrage pour point (100,800) : oeil gauche : ("+str(self.xValuePBG)+","+str(self.yValuePBG)+")")
         '''
+
+        ''' PHD , PHDG , PHG and PBD means the four point in the four corners (in french)'''
         self.clignotePoint(100,100,"Point haut gauche")
         self.xValuePHG,self.yValuePHG = self.calibrate_one_point(gaze,webcam)
         self.clignotePoint(self.width_window-100,100,"Point haut droite")
-        self.xValuePHD,self.yValuePBG = self.calibrate_one_point(gaze,webcam)
+        self.xValuePHD,self.yValuePHD = self.calibrate_one_point(gaze,webcam)
         self.clignotePoint(100,self.height_window-100,"Point bas gauche")
         self.xValuePBG,self.yValuePBG = self.calibrate_one_point(gaze,webcam)
+        self.clignotePoint(self.width_window-100,self.height_window-100,"Point bas droite")
+        self.xValuePBD,self.yValuePBD = self.calibrate_one_point(gaze,webcam)
 
-        self.calibrageX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
-        self.calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
+
+        calibrageFirstX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
+        calibreSecondX = (self.width_window-200)/abs(self.xValuePBG - self.xValuePBD)
+        calibrageFirstY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)
+        calibreSecondY = (self.height_window-200)/abs(self.yValuePHD - self.yValuePBD)
+
+        self.calibrageX =  (calibrageFirstX + calibreSecondX)/2
+        self.calibrageY =  (calibrageFirstY + calibreSecondY)/2
+
+        '''self.calibrageX = (self.width_window-200)/abs(self.xValuePHG - self.xValuePHD)
+        self.calibrageY = (self.height_window-200)/abs(self.yValuePHG - self.yValuePBG)'''
         #print("equal 1 "+ str( self.width_window-200))     #DEBUG
         #print("equal 2 "+ str(self.height_window-200))     #DEBUG
         # print("Calibrage x : "+ str(self.calibrageX))
