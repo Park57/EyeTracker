@@ -29,7 +29,7 @@ class Application :
 		#im = self.repertoiredetravail()
 
 		self.window = window
-		self.image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/image1.jpg")
+		self.image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/background.jpg")
 		self.label1 = Label(self.window, image = self.image)
 		self.label1.pack()
 		self.label1.place(x = 0, y = 0)
@@ -59,7 +59,7 @@ class Application :
 		self.input_surname = Entry()
 
 		self.button_upload = Button()
-		self.button_synthesis = Button()
+		#self.button_synthesis = Button()
 		self.button_start = Button()
 		self.button_add = Button()
 
@@ -101,7 +101,7 @@ class Application :
 
 		self.updatePos()
 	def creatBg(self):
-		image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/image1.jpg")
+		image = ImageTk.PhotoImage(master=self.window ,file= "data/pictures/background.jpg")
 		self.label1 = Label(self.window, image = image)
 		self.label1.pack()
 		self.label1.place(x = 0, y = 0)
@@ -109,7 +109,7 @@ class Application :
 	def create_title(self):
 
 		# ajout du titre
-		self.label_title = Label(self.window, text="Experimentation parameters",font=("Arial", 40),bg='white')
+		self.label_title = Label(self.window, text="Experimentation parameters",font=("Arial", 40),bg="#325261")
 		self.label_title.pack()
 		self.label_title.place(height= 50, width=self.x/2 )
 	def create_buttons(self):
@@ -124,15 +124,15 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image ?")
+		self.button_upload = Button(self.window, text="Upload new image ")
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
-		self.button_synthesis = Button(self.window, text="Speech Synthesis question")
-		self.button_synthesis.pack()
+		#self.button_synthesis = Button(self.window, text="Speech Synthesis question")
+		#self.button_synthesis.pack()
 		#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 
-		self.button_add = Button(self.window, text="add protocole",command=lambda : nouveauProtocole(self))
+		self.button_add = Button(self.window, text="Add protocole",command=lambda : nouveauProtocole(self))
 		self.button_add.pack()
 
 		self.button_start = Button(self.window, text="Start experimation",command=self.launch_an_experimentation)
@@ -143,18 +143,18 @@ class Application :
 
 		# ajout checkbox
 		self.label_data = Label(self.window, text="Save data", font=(
-			"Arial", 12), bg='#4C4B4B', fg='white')
+			"Arial", 12))
 		#self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
 
 
 
 		self.label_image = Label(self.window, text="Save graph image",
-						   font=("Arial", 12), bg='#4C4B4B', fg='white')
+						   font=("Arial", 12))
 		#self.label_image.place(x=self.x/5 +35, y=self.y*3/7)
 
 
 		self.label_sec = Label(self.window, text="Data per second",
-				   font=("Arial", 12), bg='#4C4B4B', fg='white')
+				   font=("Arial", 12))
 		self.label_sec.pack()
 		#self.label_sec.place(x=self.x/5, y=self.y*4/8)
 
@@ -179,7 +179,7 @@ class Application :
 	def create_multiple(self):
 
 		x = repucProtocoles()
-		self.list = Listbox(self.window, selectmode = "multiple",bg="red",selectbackground = "green",height=min(len(x) +1,10) )
+		self.list = Listbox(self.window, selectmode = "multiple",bg="white",selectbackground = "green",height=min(len(x) +1,10) )
 		self.list.pack()
 
 		for each_item in range(len(x)):
@@ -217,7 +217,7 @@ class Application :
 			self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
 			self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
-			self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
+			#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
 			self.button_add.place(x=self.x * 2/5, y=self.y * 4/6)
 			self.button_start.pack(pady = 30 ,side=BOTTOM)
 
