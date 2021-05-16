@@ -2,9 +2,15 @@
 from tkinter import *
 from parcourirFichier import *
 from opendata import *
+from PIL import ImageTk
+from PIL import Image
 a = []
 def nouveauProtocole(base):
 	window = Tk()
+	image = ImageTk.PhotoImage(master=window ,file= "data/pictures/background.jpg")
+	label1 = Label(window, image = image)
+	label1.pack()
+	label1.place(x = 0, y = 0)
 	x = 80
 	width_window = window.winfo_screenwidth()
 	height_window  = window.winfo_screenheight()
@@ -18,7 +24,7 @@ def nouveauProtocole(base):
 	# button_video = Button(window, text="ajouter une video")
 	# button_video.pack()
 	# button_video.place(x=width_window /4,y=height_window/2 )
-	button_annule = Button(window, text="annulé",command= lambda: annule(window))
+	button_annule = Button(window, text="annuler",command= lambda: annule(window))
 	button_annule.pack(pady = 30 ,side=BOTTOM)
 
 	label_temps = Label(window, text="Temps Experimentation",font=("Arial", 12), bg='#4C4B4B', fg='white')
