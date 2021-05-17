@@ -14,9 +14,9 @@ class Graph:
     def __init__(self):
         self.test = 0
 
- 
+
     # function who reads a file with coordinates X,Y and who creates 3 graphs
-    # 1st graph is a simple graph with a point X,Y 
+    # 1st graph is a simple graph with a point X,Y
     # 2nd graph is the 1st graph plus arrows who indicates the gaze
     # 3rd graph is a heatmap
     def readFile(self,dossier):
@@ -48,7 +48,7 @@ class Graph:
                         coordY = coordY.group()
                         lengthY = len(coordY)
                         coordY = coordY[1:lengthY]
-                        if((int(coordX) <= width and int(coordY) <= height) and (int(coordX)  >= 0 and int(coordY) >= 0)): # we don't care about gaze out of screen 
+                        if((int(coordX) <= width and int(coordY) <= height) and (int(coordX)  >= 0 and int(coordY) >= 0)): # we don't care about gaze out of screen
                             dataX = np.append(dataX,int(coordX))
                             dataY = np.append(dataY,int(coordY))
                 i = 1
@@ -61,8 +61,11 @@ class Graph:
                 plt.title('clouds of points corresponding to the X Y coordinates of the gaze on the screen')
                 plt.xlabel('x')
                 plt.ylabel('y')
-                plt.savefig('data/sauvegarde/'+dossier+'/simple_graphic_image_'+str(l)+'.png') 
-                plt.show()
+                plt.savefig('data/sauvegarde/'+dossier+'/simple_graphic_image_'+str(l)+'.png')
+                plt.draw()
+                plt.pause(3)
+                plt.close()
+
 
 
                 # 2nd graph
@@ -75,15 +78,20 @@ class Graph:
                 plt.ylabel('y')
                 x = 1
                 while i < len(dataX):
-                    # we use the Euclidean distance to display only arrows greater than 100 pixels 
-                    if(math.sqrt(((dataX[i]-dataX[i-1])*(dataX[i]-dataX[i-1]))+(dataY[i]-dataY[i-1])*(dataY[i]-dataY[i-1]))> 100): 
+                    # we use the Euclidean distance to display only arrows greater than 100 pixels
+                    if(math.sqrt(((dataX[i]-dataX[i-1])*(dataX[i]-dataX[i-1]))+(dataY[i]-dataY[i-1])*(dataY[i]-dataY[i-1]))> 100):
                         plt.annotate('  '+str(x), xy=(dataX[i], dataY[i]),xytext=(dataX[i-1],dataY[i-1]),arrowprops=dict(facecolor='black',arrowstyle='->'))
-                        x += 1 
+                        x += 1
                     i += 1
                 plt.savefig('data/sauvegarde/'+dossier+'/gaze_graphic_image_'+str(l)+'.png')
-                plt.show()
+                plt.draw()
+                plt.pause(3)
+                plt.close()
 
-                #3rd graph 
+
+
+
+                #3rd graph
                 plt.figure(1,figsize=(15,8))
                 plt.xlim(-50,width+100)
                 plt.ylim(-50,height+100)
@@ -92,11 +100,15 @@ class Graph:
                 plt.ylabel('y')
                 sns.kdeplot(dataX, y=dataY, cmap="Reds", shade=True, bw_adjust=.5)
                 plt.savefig('data/sauvegarde/'+dossier+'/contour_plot_image_'+str(l)+'.png')
-                plt.show()
+                plt.draw()
+                plt.pause(3)
+                plt.close()
+
+
                 l +=1
 
 
-        
 
 
-            
+
+
