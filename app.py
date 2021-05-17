@@ -43,7 +43,7 @@ class Application :
 		# personnalisation de la fenêtre
 
 
-		self.window.title("My application")
+		self.window.title("Eyetracking")
 		self.window.geometry(str(self.x)+"x"+str(self.y))
 		self.window.minsize(600, 400)
 
@@ -72,6 +72,8 @@ class Application :
 		self.data_check = Checkbutton()
 
 		self.graph_check = Checkbutton()
+
+		self.draw_point = Checkbutton()
 
 
 		self.scale_data = Scale()
@@ -175,6 +177,11 @@ class Application :
 		self.graph_check = Checkbutton(self.window, text="", bg='#4C4B4B')
 		self.graph_check.select()
 		self.graph_check.pack()
+
+		self.debug = IntVar()
+		self.draw_point = Checkbutton(self.window, text="Draw point (debug mode)", bg='white',variable=self.debug)
+		self.draw_point.pack()
+
 		#self.graph_check.place(x=self.x/5, y=self.y*3/7)
 	def create_multiple(self):
 
@@ -228,6 +235,8 @@ class Application :
 
 			self.data_check.place(x=self.x/5, y=self.y*2/6)
 			self.graph_check.place(x=self.x/5, y=self.y*3/7)
+			self.draw_point.place(x=self.x/5, y=self.y*5/8 -5)
+
 
 			self.scale_data.place(x=self.x/5, y=self.y*4/8 +25)
 			#self.scale_volume.place(x=self.x*3/5, y=self.y*4/8 +25)
@@ -263,10 +272,10 @@ class Application :
 		#self.graphe.readFile("Troll")
 		calibration = Calibration()
 		calibration.start_calibration()
+		debug = self.debug.get()
 		for i in range(self.list.size()):
 			if self.list.selection_includes(i) == 1:
-				self.experimentation.start_experimentation(self.input_name.get(),str(self.list.get(i)),calibration,self.list.get(i))
-
+				self.experimentation.start_experimentation(self.input_name.get(),str(self.list.get(i)),calibration,debug,self.list.get(i))
 		self.graphe.readFile(self.input_name.get())
 		#self.experimentation.start_experimentation(self.input_name.get(),'test')
 

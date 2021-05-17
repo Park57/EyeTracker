@@ -26,8 +26,7 @@ class Experimentation :
     #Method to draw a point
     def draw_point(self,x,y):
         self.canvas.create_oval(x+10, y+10, x-10, y-10, fill="#FF0000")
-        self.window.update_idletasks()
-        self.window.update()
+
 
 
     #Method to save the data
@@ -41,7 +40,7 @@ class Experimentation :
 
 
     #Method to start an new experimentation
-    def start_experimentation(self,directory,file,calibration,image = None):
+    def start_experimentation(self,directory,file,calibration,debug,image = None):
         self.window = Tk()
         liste = []
         self.width_window = self.window.winfo_screenwidth()
@@ -61,6 +60,8 @@ class Experimentation :
 
         self.canvas = Canvas(self.window,width = self.width_window,height=self.height_window)
         self.canvas.pack(expand=YES, fill=BOTH)
+        self.window.update_idletasks()
+        self.window.update()
 
         if image is not None:
             nomProtocole,adressImage, temps = repucProtocoleInfo(image)
@@ -111,8 +112,12 @@ class Experimentation :
                 y = (yRightEye + yLeftEye)/2
                 xPoint = abs(x - self.xValuePHG) * calibrageX
                 yPoint = abs(y - self.yValuePHG) * calibrageY'''
+
                 xPoint,yPoint = calibration.getScreenCoord(xLeftEye,xRightEye,yLeftEye,yRightEye)
-                self.draw_point(xPoint,yPoint)
+                if(debug == 1):
+                    self.draw_point(xPoint,yPoint)
+                self.window.update_idletasks()
+                self.window.update()
                 f.write("("+str(int(xPoint))+","+str(int(yPoint))+")\n")
                 #print("New Point : (" +str(xPoint)+","+str(yPoint)+")" )   #DEBUG
             toc = time.perf_counter()
