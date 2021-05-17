@@ -27,7 +27,7 @@ def nouveauProtocole(base):
 	button_annule = Button(window, text="annuler",command= lambda: annule(window))
 	button_annule.pack(pady = 30 ,side=BOTTOM)
 
-	label_temps = Label(window, text="Temps Experimentation",font=("Arial", 12), bg='#4C4B4B', fg='white')
+	label_temps = Label(window, text="Temps Experimentation",font=("Arial", 12))
 	label_temps.pack()
 	label_temps.place(x=width_window *2/4 - x,y=height_window*2/6 - 30)
 	scale_temps = Scale(window, bg='#4C4B4B', orient=HORIZONTAL,from_=3, to=30, resolution=1)
@@ -36,8 +36,9 @@ def nouveauProtocole(base):
 	button_valider = Button(window, text="valider",command= lambda: (valider(input_name.get(),base,scale_temps.get()),annule(window)))
 	button_valider.pack(pady = 30 ,side=BOTTOM)
 
-	label_title = Label(window, text="Nouveau Protocole parametres",font=("Arial", 40), bg='#4C4B4B', fg='white')
+	label_title = Label(window, text="Nouveau Protocole parametres",font=("Arial", 40), bg='#325261', fg='white')
 	label_title.pack()
+
 
 	#vcmd = (master1.register(self.validate),'%d',)
     #dlabel_temps = tk.Entry(self.panel2, validate = 'key', validatecommand = vcmd)
