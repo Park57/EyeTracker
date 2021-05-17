@@ -67,8 +67,9 @@ class Experimentation :
             nomProtocole,adressImage, temps = repucProtocoleInfo(image)
 
             s = os.getcwd()
-            image = ImageTk.PhotoImage(master=self.window ,file= s+'/'+ adressImage)
-            self.canvas.create_image(0, 0, image=image, anchor=NW)
+            im = ImageTk.PhotoImage(master=self.window ,file= s+'/'+ adressImage)
+            self.label = Label(self.canvas, image = im)
+            self.label.pack(fill='both', expand='yes')
             maxTime = int(temps)
             '''image = Image.open(s+'/'+ adressImage)
             # The (450, 350) is (height, width)
