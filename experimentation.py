@@ -94,7 +94,7 @@ class Experimentation :
         tic = time.perf_counter()
         toc = time.perf_counter()
 
-        f = open("data/sauvegarde/"+directory +"/"+file, "w")
+        f = open("data/sauvegarde/"+directory +"/"+file+".txt", "w")
         f.write(str(self.width_window)+"/"+str(self.height_window)+"\n")
 
         while toc - tic < maxTime :
