@@ -124,7 +124,7 @@ class Application :
 		self.input_surname.pack()
 		#self.input_surname.place(x=self.x *3/5, y= self.y /4)
 
-		self.button_upload = Button(self.window, text="Upload new image ")
+		self.button_upload = Button(self.window, text="Choix du périphérique d'eye tracking")
 		self.button_upload.pack()
 		#self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 
