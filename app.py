@@ -218,7 +218,7 @@ class Application :
 
 			self.button_upload.place(x= self.x/5	,  y= self.y * 4/6)
 			#self.button_synthesis.place(x=self.x * 3/5, y=self.y * 4/6)
-			self.button_add.place(x=self.x * 2/5, y=self.y * 4/6)
+			self.button_add.place(x=self.x * 3/5, y=self.y * 4/6)
 			self.button_start.pack(pady = 30 ,side=BOTTOM)
 
 			self.label_data.place(x=self.x/5 +35, y=self.y*2/6 )
